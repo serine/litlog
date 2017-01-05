@@ -18,9 +18,6 @@ logit() {
   # unset know variables
   unset TITLE
   unset MESSAGE
-  # set the default value
-  DATE=`date "+%F"`
-  #FILENAME="LOGIT.md"
   # number of arguments on cmd
   #echo $#
   while [[ $# -gt 0 ]]
@@ -31,18 +28,13 @@ logit() {
       act|activate)
         case "$2" in
           "")
-            FILENAME="ILOG"
+            FILENAME="LOG.txt"
             ;;
           *)
             FILENAME="$2"
             shift
             ;;
         esac
-
-        if [[ ! -f $FILENAME ]]
-        then
-          touch $FILENAME
-        fi
         source "$dir/activate.zsh"
         ;; # past argument
       deact|deactivate)
@@ -70,10 +62,4 @@ logit() {
     esac
     shift # past argument or value
   done
-
-  # only append date string once a day
-  #if ! grep -q $DATE "$FILENAME"
-  #then
-  #  echo "%>$DATE" >> $FILENAME
-  #fi
 }
