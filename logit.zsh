@@ -45,8 +45,14 @@ logit() {
       # only append title if it was given
       if [[ ! -z $TITLE ]]
       then
-        echo "# $TITLE" >> $FILENAME
-        echo "" >> $FILENAME
+        # and if it isn't a duplicate for the cases
+        # when the same logit -t command reused with now
+        # new -m MESSAGE option
+        if ! grep -q "# $TITLE" "$FILENAME"
+        then
+          echo "# $TITLE" >> $FILENAME
+          echo "" >> $FILENAME
+        fi
       fi
       shift # past argument
       ;;
