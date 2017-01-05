@@ -1,5 +1,20 @@
 
-PROMPT="(logit-2-$FILENAME) %{${fg[green]}%}[%m]:%{$reset_color%}%2~%{$reset_color%}%# " 
+DATE=`date "+%F"`
+
+if [[ -f $FILENAME ]]
+then
+  # only append date string once a day
+  if ! grep -q $DATE "$FILENAME"
+  then
+    echo "%>$DATE" >> $FILENAME
+    echo "%>This is another day of work" >> $FILENAME
+  fi
+else
+  echo "%>$DATE" > $FILENAME
+  echo "%>$FILENAME was activated in $PWD" >> $FILENAME
+fi
+
+PROMPT="(logit-2-$FILENAME)%{${fg[green]}%}[%m]:%{$reset_color%}%2~%{$reset_color%}%# " 
 
 _per-directory-history-addhistory() {
   print -Sr -- "${1%%$'\n'}"
