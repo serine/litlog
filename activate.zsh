@@ -15,7 +15,7 @@ else
   echo "%>Active file for logging $FILENAME" >> $FILENAME
 fi
 
-PROMPT="(logit-2-$FILENAME)%{${fg[green]}%}[%m]:%{$reset_color%}%2~%{$reset_color%}%# " 
+PROMPT="(logit@$FILENAME)%{${fg[green]}%}[%m]:%{$reset_color%}%2~%{$reset_color%}%# " 
 
 _history_logger() {
   print -Sr -- "${1%%$'\n'}"
