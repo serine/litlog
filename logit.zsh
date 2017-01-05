@@ -7,67 +7,73 @@
 # as in the --default example).
 # note: if this is set to -gt 0 the /etc/hosts part is not recognized ( may be a bug )
 
+autoload colors
+colors
+
+#SOURCE=${(%):-%N)}
+src=$(readlink -f "$0")
+dir=$(dirname $src)
+
 logit() {
   # unset know variables
   unset TITLE
   unset MESSAGE
   # set the default value
   DATE=`date "+%F"`
-  FILENAME="LOGIT.md"
+  #FILENAME="LOGIT.md"
   # number of arguments on cmd
   #echo $#
-  while [[ $# -gt 1 ]]
+  while [[ $# -gt 0 ]]
   do
     key="$1"
 
     case $key in
-      -t|--title)
-        TITLE="$2"
-        shift
+      act|activate)
+        case "$2" in
+          "")
+            FILENAME="ILOG"
+            ;;
+          *)
+            FILENAME="$2"
+            shift
+            ;;
+        esac
+
+        if [[ ! -f $FILENAME ]]
+        then
+          touch $FILENAME
+        fi
+        source "$dir/activate.zsh"
         ;; # past argument
+      deact|deactivate)
+        source "$dir/deactivate.zsh"
+        ;;
+      -t|--title)
+      TITLE="$2"
+      # only append title if it was given
+      if [[ ! -z $TITLE ]]
+      then
+        echo "# $TITLE" >> $FILENAME
+        echo "" >> $FILENAME
+      fi
+      shift # past argument
+      ;;
       -m|--message)
       MESSAGE="$2"
+      if [[ ! -z $MESSAGE ]]
+      then
+        echo $MESSAGE >> $FILENAME
+        echo "" >> $FILENAME
+      fi
       shift # past argument
-      ;;
-      -f|--file)
-      FILENAME="$2"
-      shift # past argument
-      ;;
-      --default)
-      DEFAULT=YES
       ;;
     esac
     shift # past argument or value
   done
-  # check that file exists and is a regular file
-  if [[ ! -f $FILENAME ]]
-  then
-    touch $FILENAME
-  fi
+
   # only append date string once a day
-  if ! grep -q $DATE "$FILENAME"
-  then
-    echo "%>$DATE" >> $FILENAME
-  fi
-  # only append title if it was given
-  if [[ ! -z $TITLE ]]
-  then
-    echo "# $TITLE" >> $FILENAME
-  fi
-  if [[ ! -z $MESSAGE ]]
-  then
-    echo >> $FILENAME
-    echo $MESSAGE >> $FILENAME
-    echo >> $FILENAME
-  fi
+  #if ! grep -q $DATE "$FILENAME"
+  #then
+  #  echo "%>$DATE" >> $FILENAME
+  #fi
 }
-
-_per-directory-history-addhistory() {
-  print -Sr -- "${1%%$'\n'}"
-  fc -p $FILENAME
-}
-# load hooks function
-# for builtin functions -U flag is recomeneded
-autoload -U add-zsh-hook
-add-zsh-hook zshaddhistory _per-directory-history-addhistory
-
