@@ -1,6 +1,13 @@
+# load colours for prompt
+autoload colors
+colors
 
 DATE=`date "+%F"`
 TIME=`date "+%T"`
+
+# if length of the string is non-zero
+#if [[ -n $FILENAME && -f $FILENAME ]]
+#then
 
 if [[ -f $FILENAME ]]
 then
@@ -15,7 +22,9 @@ else
   echo "%>Active file for logging $FILENAME" >> $FILENAME
 fi
 
-PROMPT="(logit@$FILENAME)%{${fg[green]}%}[%m]:%{$reset_color%}%2~%{$reset_color%}%# " 
+base_name=$(basename $FILENAME)
+
+PROMPT="(logit@$base_name)%{${fg[green]}%}[%m]:%{$reset_color%}%2~%{$reset_color%}%# " 
 
 _history_logger() {
   print -Sr -- "${1%%$'\n'}"
