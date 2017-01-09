@@ -7,8 +7,6 @@
 # as in the --default example).
 # note: if this is set to -gt 0 the /etc/hosts part is not recognized ( may be a bug )
 
-autoload colors
-colors
 
 #SOURCE=${(%):-%N)}
 src=$(readlink -f "$0")
@@ -18,6 +16,7 @@ logit() {
   # unset know variables
   unset TITLE
   unset MESSAGE
+  unset old_log
   # number of arguments on cmd
   #echo $#
   while [[ $# -gt 0 ]]
@@ -28,10 +27,17 @@ logit() {
       act|activate)
         case "$2" in
           "")
-            FILENAME="LOG.txt"
+            FILENAME="$PWD/LOG.txt"
             ;;
           *)
-            FILENAME="$2"
+            if [[ -n $FILENAME ]]
+            then
+              old_log="$FILENAME"
+              FILENAME="$PWD/$2"
+              source "$dir/switch.zsh"
+            else
+              FILENAME="$PWD/$2"
+            fi
             shift
             ;;
         esac
