@@ -27,7 +27,14 @@ logit() {
       act|activate)
         case "$2" in
           "")
-            FILENAME="$PWD/LOG.txt"
+            if [[ -f $FILENAME ]]
+            then
+              old_log="$FILENAME"
+              FILENAME="$PWD/LOG.txt"
+              source "$dir/switch.zsh"
+            else
+              FILENAME="$PWD/LOG.txt"
+            fi
             ;;
           *)
             if [[ -n $FILENAME ]]
