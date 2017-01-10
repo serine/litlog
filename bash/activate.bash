@@ -1,14 +1,18 @@
 
-#sys_hist_file=$HISTFILE
-HISTFILE=$FILENAME
+sys_hist_file=$HISTFILE
+export HISTFILE=$FILENAME
 
-#export HISTIGNORE="history\s+:"
-#export HISTTIMEFORMAT="%F %T: "
-#export HISTCONTROL=ignoredups:erasedups
+user_histignore=$HISTIGNORE
+user_histtimeformat=$HISTTIMEFORMAR
+user_histcontrol=$HISTCONTROL
+
+export HISTIGNORE="history\s+:logit*:^%>*: $HISTIGNORE"
+export HISTTIMEFORMAT="%F %T: "
+export HISTCONTROL=ignoredups:erasedups
 #
-#shopt -s histappend ## append, no clearouts
-#shopt -s histverify ## edit a recalled history line before executing
-#shopt -s histreedit ## reedit a history substitution line if it failed 
+shopt -s histappend ## append, no clearouts
+shopt -s histverify ## edit a recalled history line before executing
+shopt -s histreedit ## reedit a history substitution line if it failed 
 
 # https://www.gnu.org/software/bash/manual/bashref.html#index-history
 # -r read from current history file
@@ -34,6 +38,12 @@ else
 fi
 
 base_name=$(basename $FILENAME)
+
+if [[ "$PS1" =~ "*logit*" ]]
+then
+  echo hey
+  PS1=$user_prompt
+fi
 
 user_prompt=$PS1
 PS1="(logit@\[\033[1;31m\]$base_name) \[\033[00m\]$PS1"
