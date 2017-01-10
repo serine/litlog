@@ -21,7 +21,7 @@ logit() {
         echo ""
         echo "  Options: "
         echo ""
-        echo "           act (activate) - start logit env"
+        echo "           act (activate) [PATH] - start logit env, default use PWD variable"
         #echo "           act (activate) [OPTIONS] - to initiate logit env"
         #echo "                       --private - to initiate private logit env i.e hidden history"
         echo "           deact (deactivate) - leave logit env"
@@ -44,6 +44,18 @@ logit() {
         case "$2" in
           (--private)
             private="PRIVATE_SESSION!"
+            ;;
+          ("")
+            env_path="$PWD"
+            ;;
+          (*)
+            if [[ -d "$2" ]]
+            then
+              env_path="$2"
+            else
+              echo "ERROR: please specify correct path to directory"
+              exit 1
+            fi
             ;;
         esac
         shift

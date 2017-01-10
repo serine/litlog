@@ -1,7 +1,7 @@
 #TODO think about how to append history back to a ~/.bash_history file
 # if the user flags private then don't append on exit
 
-logit_dir="$PWD/.logit"
+logit_dir="$env_path/.logit"
 text_file="$logit_dir/text.log"
 hist_file="$logit_dir/history.log"
 
