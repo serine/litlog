@@ -15,6 +15,8 @@ fi
 
 sys_histfile=$HISTFILE
 export HISTFILE=$hist_file
+# append existing history buffer to an old HISTFILE
+history -a $sys_histfile
 # clear history cache
 history -c
 
@@ -22,7 +24,7 @@ user_histignore=$HISTIGNORE
 user_histtimeformat=$HISTTIMEFORMAR
 user_histcontrol=$HISTCONTROL
 
-export HISTIGNORE="history\s+: $HISTIGNORE"
+export HISTIGNORE="history\s+:echo\s%>*: $HISTIGNORE"
 export HISTTIMEFORMAT="%F %T: "
 export HISTCONTROL=ignoredups:erasedups
 #
@@ -42,26 +44,19 @@ then
   if grep -q $DATE "$text_file"
   then
     echo "%> Another day at work yay ! $DATE $TIME" >> $text_file
+  else
+    echo "%> logit_env activated on $DATE at $TIME" >> $text_file
+    echo "%> logit_env activated in $parent_dir" >> $text_file
   fi
-else
-  echo "%> logit_env activated on $DATE at $TIME" >> $text_file
-  echo "%> logit_env activated in $parent_dir" >> $text_file
 fi
 
 # https://www.gnu.org/software/bash/manual/bashref.html#index-history
 # -r read from current history file
 # -c clear memory
 # -a append
-#user_prompt_cmd=$PROMPT_COMMAND
-#export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+user_prompt_cmd=$PROMPT_COMMAND
+export PROMPT_COMMAND="history -a; history -c; history -r;"
 
-#
-#if [[ "$PS1" =~ "*logit*" ]]
-#then
-#  echo hey
-#  PS1=$user_prompt
-#fi
-#
 user_prompt=$PS1
 #PS1="(logitenv@\[\033[1;31m\]$parent_dir\[\033[00m\]) $PS1"
 #PS1="(\[\033[1;31m\]logit_env\[\033[00m\]) $PS1"

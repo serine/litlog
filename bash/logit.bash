@@ -6,7 +6,7 @@ logit() {
   # unset know variables
   unset title
   unset note
-  unset old_log
+  unset private
   # number of arguments on cmd
   #echo $#
   while [[ $# -gt 0 ]]
@@ -30,6 +30,12 @@ logit() {
         shift
         ;;
       (act|activate)
+        case "$2" in
+          (pr|private)
+            private="PRIVATE_SESSION!"
+            ;;
+        esac
+        shift
         source "$dir/activate.bash"
         ;; # past argument
       (deact|deactivate)
