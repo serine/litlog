@@ -16,22 +16,33 @@ logit() {
     case $key in
       (-h|--help)
         echo ""
+        echo "  Version: 0.1.1"
         echo "  Usage: logit [OPTION]"
         echo ""
         echo "  Options: "
         echo ""
-        echo "           act (activate) - to initiate logit env"
-        echo "           deact (deactivate) - to leave logit env"
-        echo "           -t (--title) - to add a title to your log"
-        echo "           -n (--note) - to add a note to your log"
-        echo "           -s (--show) - to show logging notes thus far"
-        echo "           -w (--write) [FILENAME] - to write logging notes to a file"
+        echo "           act (activate) - start logit env"
+        #echo "           act (activate) [OPTIONS] - to initiate logit env"
+        #echo "                       --private - to initiate private logit env i.e hidden history"
+        echo "           deact (deactivate) - leave logit env"
+        echo ""
+        echo "           -t (--title) - add title to buffer"
+        echo "           -n (--note) - add notes to buffer"
+        echo ""
+        echo "           -s (--show) [OPTIONS]"
+        echo "                       T (text) - show buffering notes so far"
+        echo "                       L (location) - show location of the log file with notes"
+        echo ""
+        echo "           -w (--write) [OPTIONS]"
+        echo "                       A (all) - write notes with history to the log file"
+        echo "                       H (history) - write just the history to the log file"
+        echo "                       N (notes) - write just the notes to the log file"
         echo ""
         shift
         ;;
       (act|activate)
         case "$2" in
-          (pr|private)
+          (--private)
             private="PRIVATE_SESSION!"
             ;;
         esac
@@ -43,7 +54,7 @@ logit() {
         ;;
       (-s|--show)
         case "$2" in
-          (t|text)
+          (T|text)
             if [[ -n $text_file ]]
             then
               cat $text_file
@@ -51,7 +62,7 @@ logit() {
               echo "logit env hasn't been activated"
             fi
             ;;
-          (l|location)
+          (L|location)
             if [[ -n $parent_dir ]]
             then
               echo $parent_dir
@@ -65,12 +76,21 @@ logit() {
       (-w|--write)
         env_origin=$(basename $logit_dir)
         case "$2" in
-          ("")
-            out_file="$env_origin/../LOG.txt"
+          (A|all)
+            write_all="write_all"
             ;;
-          (*)
-            out_file="$env_origin/../$2"
+          (H|history)
+            write_history="write_history"
             ;;
+          (N|notes)
+            write_notes="write_notes"
+            ;;
+          #("")
+          #  out_file="$env_origin/../LOG.txt"
+          #  ;;
+          #(*)
+          #  out_file="$env_origin/../$2"
+          #  ;;
         esac
         source "$dir/write.bash"
         ;;
