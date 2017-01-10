@@ -1,0 +1,8 @@
+# An idea
+
+using logit can become something more then I intended.
+for example one can set special history environment for privacy
+purposes. By sourcing particular logitenv user should be detached from system wide $HISTFILE and all history should be logged to user's log file files instead. 
+
+
+
