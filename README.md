@@ -4,7 +4,7 @@
 
 **N.B I'm attempting to support two shells BASH and ZSH. Right now BASH is in beta and ready for use, whereas ZSH doesn't have as intricate history handling as BASH right now**
 
-- [Quicks start](#quicks-start)
+- [Quick start](#quick-start)
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Usage](#usage)
