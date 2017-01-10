@@ -1,36 +1,47 @@
-# load colours for prompt
-autoload colors
-colors
+
+logit_dir="$PWD/.logit"
+text_file="$logit_dir/text.log"
+hist_file="$logit_dir/history.log"
+
+if [[ -d $logit_dir ]]
+then
+  echo "Detected an existing logit env, adding on to an existing env"
+else
+  mkdir $logit_dir
+  touch $text_file $hist_file
+fi
+
 
 DATE=`date "+%F"`
 TIME=`date "+%T"`
 
-# if length of the string is non-zero
-#if [[ -n $FILENAME && -f $FILENAME ]]
-#then
+parent_dir=$(dirname $logit_dir)
+base_name=$(basename $parent_dir)
 
-if [[ -f $FILENAME ]]
+if [[ -f $text_file ]]
 then
   # only append date string once a day
-  if grep -q $DATE "$FILENAME"
+  if grep -q $DATE "$text_file"
   then
-    echo "%>Another day at work yay ! $DATE $TIME" >> $FILENAME
+    echo "%> Another day at work yay ! $DATE $TIME" >> $text_file
+  else
+    echo "%> logit_env activated on $DATE at $TIME" >> $text_file
+    echo "%> logit_env activated in $parent_dir" >> $text_file
   fi
-else
-  echo "%>Activated on $DATE at $TIME" > $FILENAME
-  echo "%>Activated in $PWD" >> $FILENAME
-  echo "%>Active file for logging $FILENAME" >> $FILENAME
 fi
 
-base_name=$(basename $FILENAME)
+# load colours for prompt
+autoload colors
+colors
 
-PROMPT="(logit@$base_name)%{${fg[green]}%}[%m]:%{$reset_color%}%2~%{$reset_color%}%# " 
+user_prompt=$PROMPT
+PROMPT="(logit_env) $PROMPT"
 
 _history_logger() {
   print -Sr -- "${1%%$'\n'}"
-  fc -p $FILENAME
+  fc -p $hist_file
 }
-HISTORY_IGNORE="fc*|logit*"
+#HISTORY_IGNORE="fc*|logit*"
 # load hooks function
 # for builtin functions -U flag is recomeneded
 autoload -U add-zsh-hook

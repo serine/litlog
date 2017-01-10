@@ -7,16 +7,14 @@
 # as in the --default example).
 # note: if this is set to -gt 0 the /etc/hosts part is not recognized ( may be a bug )
 
-
 #SOURCE=${(%):-%N)}
 src=$(readlink -f "$0")
 dir=$(dirname $src)
 
 logit() {
   # unset know variables
-  unset TITLE
-  unset MESSAGE
-  unset old_log
+  unset title
+  unset note
   # number of arguments on cmd
   #echo $#
   while [[ $# -gt 0 ]]
@@ -24,60 +22,99 @@ logit() {
     key="$1"
 
     case $key in
-      act|activate)
+      (-h|--help)
+        echo ""
+        echo "  Version: 0.1.1"
+        echo "  Usage: logit [OPTIONS]"
+        echo ""
+        echo "  Options: "
+        echo ""
+        echo "           act (activate) - start logit env"
+        #echo "           act (activate) [OPTIONS] - to initiate logit env"
+        #echo "                       --private - to initiate private logit env i.e hidden history"
+        echo "           deact (deactivate) - leave logit env"
+        echo ""
+        echo "           -t (--title) - add title to buffer"
+        echo "           -n (--note) - add notes to buffer"
+        echo ""
+        echo "           -s (--show) [OPTIONS]"
+        echo "                       T (text) - show buffering notes so far"
+        echo "                       L (location) - show location of the log file with notes"
+        echo ""
+        echo "           -w (--write) [OPTIONS]"
+        echo "                       A (all) - write notes with history to the log file"
+        echo "                       H (history) - write just the history to the log file"
+        echo "                       N (notes) - write just the notes to the log file"
+        echo ""
+        shift
+        ;;
+      (act|activate)
         case "$2" in
-          "")
-            if [[ -f $FILENAME ]]
-            then
-              old_log="$FILENAME"
-              FILENAME="$PWD/LOG.txt"
-              source "$dir/switch.zsh"
-            else
-              FILENAME="$PWD/LOG.txt"
-            fi
-            ;;
-          *)
-            if [[ -n $FILENAME ]]
-            then
-              old_log="$FILENAME"
-              FILENAME="$PWD/$2"
-              source "$dir/switch.zsh"
-            else
-              FILENAME="$PWD/$2"
-            fi
-            shift
+          (--private)
+            private_env="PRIVATE_SESSION!"
             ;;
         esac
         source "$dir/activate.zsh"
         ;; # past argument
-      deact|deactivate)
+      (deact|deactivate)
         source "$dir/deactivate.zsh"
         ;;
-      -t|--title)
-      TITLE="$2"
-      # only append title if it was given
-      if [[ ! -z $TITLE ]]
-      then
-        # and if it isn't a duplicate for the cases
-        # when the same logit -t command reused with now
-        # new -m MESSAGE option
-        if ! grep -q "# $TITLE" "$FILENAME"
+      (-s|--show)
+        case "$2" in
+          (T|text)
+            if [[ -n $text_file ]]
+            then
+              cat $text_file
+            else
+              echo "logit env hasn't been activated"
+            fi
+            ;;
+          (L|location)
+            if [[ -n $parent_dir ]]
+            then
+              echo $parent_dir
+            else
+              echo "logit env hasn't been activated"
+            fi
+            ;;
+        esac
+        ;;
+      (-w|--write)
+        env_origin=$(basename $logit_dir)
+        out_file="$env_origin/../LOG.txt"
+        case "$2" in
+          (A|all)
+            write_all="write_all"
+            ;;
+          (H|history)
+            write_history="write_history"
+            ;;
+          (N|notes)
+            write_notes="write_notes"
+            ;;
+        esac
+        source "$dir/write.zsh"
+        ;;
+      (-t|--title)
+        title="$2"
+        # only append title if it was given
+        if [[ ! -z $title ]]
         then
-          echo "# $TITLE" >> $FILENAME
-          echo "" >> $FILENAME
+          # only append title once to text_file
+          if ! grep -q "$title" "$text_file"
+          then
+            echo "%> Title: $title" >> $text_file
+          fi
         fi
-      fi
-      shift # past argument
-      ;;
-      -m|--message)
-      MESSAGE="$2"
-      if [[ ! -z $MESSAGE ]]
-      then
-        echo $MESSAGE >> $FILENAME
-        echo "" >> $FILENAME
-      fi
-      shift # past argument
-      ;;
+        ;;
+      (-n|--note)
+        note="$2"
+        if [[ ! -z $note ]]
+        then
+          echo "%> Note: $note" >> $text_file
+        fi
+        shift # past argument
+        ;;
     esac
     shift # past argument or value
   done
