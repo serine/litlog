@@ -17,7 +17,7 @@ logit() {
       (-h|--help)
         echo ""
         echo "  Version: 0.1.1"
-        echo "  Usage: logit [OPTION]"
+        echo "  Usage: logit [OPTIONS]"
         echo ""
         echo "  Options: "
         echo ""
