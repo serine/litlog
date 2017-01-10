@@ -1,12 +1,28 @@
+#TODO think about how to append history back to a ~/.bash_history file
+# if the user flags private then don't append on exit
 
-sys_hist_file=$HISTFILE
-export HISTFILE=$FILENAME
+logit_dir="$PWD/.logit"
+text_file="$logit_dir/text.log"
+hist_file="$logit_dir/history.log"
+
+if [[ -d $logit_dir ]]
+then
+  echo "Detected an existing logit env, adding on to an existing env"
+else
+  mkdir $logit_dir
+  touch $text_file $hist_file
+fi
+
+sys_histfile=$HISTFILE
+export HISTFILE=$hist_file
+# clear history cache
+history -c
 
 user_histignore=$HISTIGNORE
 user_histtimeformat=$HISTTIMEFORMAR
 user_histcontrol=$HISTCONTROL
 
-export HISTIGNORE="history\s+:logit*:^%>*: $HISTIGNORE"
+export HISTIGNORE="history\s+: $HISTIGNORE"
 export HISTTIMEFORMAT="%F %T: "
 export HISTCONTROL=ignoredups:erasedups
 #
@@ -14,36 +30,40 @@ shopt -s histappend ## append, no clearouts
 shopt -s histverify ## edit a recalled history line before executing
 shopt -s histreedit ## reedit a history substitution line if it failed 
 
+DATE=`date "+%F"`
+TIME=`date "+%T"`
+
+parent_dir=$(dirname $logit_dir)
+base_name=$(basename $parent_dir)
+
+if [[ -f $text_file ]]
+then
+  # only append date string once a day
+  if grep -q $DATE "$text_file"
+  then
+    echo "%> Another day at work yay ! $DATE $TIME" >> $text_file
+  fi
+else
+  echo "%> logit_env activated on $DATE at $TIME" >> $text_file
+  echo "%> logit_env activated in $parent_dir" >> $text_file
+fi
+
 # https://www.gnu.org/software/bash/manual/bashref.html#index-history
 # -r read from current history file
 # -c clear memory
 # -a append
-user_prompt_cmd=$PROMPT_COMMAND
-export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+#user_prompt_cmd=$PROMPT_COMMAND
+#export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
-DATE=`date "+%F"`
-TIME=`date "+%T"`
-
-if [[ -f $FILENAME ]]
-then
-  # only append date string once a day
-  if grep -q $DATE "$FILENAME"
-  then
-    echo "%>Another day at work yay ! $DATE $TIME" >> $FILENAME
-  fi
-else
-  echo "%>Activated on $DATE at $TIME" > $FILENAME
-  echo "%>Activated in $PWD" >> $FILENAME
-  echo "%>Active file for logging $FILENAME" >> $FILENAME
-fi
-
-base_name=$(basename $FILENAME)
-
-if [[ "$PS1" =~ "*logit*" ]]
-then
-  echo hey
-  PS1=$user_prompt
-fi
-
+#
+#if [[ "$PS1" =~ "*logit*" ]]
+#then
+#  echo hey
+#  PS1=$user_prompt
+#fi
+#
 user_prompt=$PS1
-PS1="(logit@\[\033[1;31m\]$base_name) \[\033[00m\]$PS1"
+#PS1="(logitenv@\[\033[1;31m\]$parent_dir\[\033[00m\]) $PS1"
+#PS1="(\[\033[1;31m\]logit_env\[\033[00m\]) $PS1"
+PS1="(logit_env) $PS1"
+

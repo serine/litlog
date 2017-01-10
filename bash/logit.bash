@@ -4,8 +4,8 @@ dir=$(dirname $src)
 
 logit() {
   # unset know variables
-  unset TITLE
-  unset MESSAGE
+  unset title
+  unset note
   unset old_log
   # number of arguments on cmd
   #echo $#
@@ -14,60 +14,81 @@ logit() {
     key="$1"
 
     case $key in
-      act|activate)
-        case "$2" in
-          "")
-            if [[ -f $FILENAME ]]
-            then
-              old_log="$FILENAME"
-              FILENAME="$PWD/LOG.txt"
-              source "$dir/switch.bash"
-            else
-              FILENAME="$PWD/LOG.txt"
-            fi
-            ;;
-          *)
-            if [[ -n $FILENAME ]]
-            then
-              old_log="$FILENAME"
-              FILENAME="$PWD/$2"
-              source "$dir/switch.bash"
-            else
-              FILENAME="$PWD/$2"
-            fi
-            shift
-            ;;
-        esac
+      (-h|--help)
+        echo ""
+        echo "  Usage: logit [OPTION]"
+        echo ""
+        echo "  Options: "
+        echo ""
+        echo "           act (activate) - to initiate logit env"
+        echo "           deact (deactivate) - to leave logit env"
+        echo "           -t (--title) - to add a title to your log"
+        echo "           -n (--note) - to add a note to your log"
+        echo "           -s (--show) - to show logging notes thus far"
+        echo "           -w (--write) [FILENAME] - to write logging notes to a file"
+        echo ""
+        shift
+        ;;
+      (act|activate)
         source "$dir/activate.bash"
         ;; # past argument
-      deact|deactivate)
+      (deact|deactivate)
         source "$dir/deactivate.bash"
         ;;
-      -t|--title)
-      TITLE="$2"
-      # only append title if it was given
-      if [[ ! -z $TITLE ]]
-      then
-        # and if it isn't a duplicate for the cases
-        # when the same logit -t command reused with now
-        # new -m MESSAGE option
-        if ! grep -q "# $TITLE" "$FILENAME"
+      (-s|--show)
+        case "$2" in
+          (t|text)
+            if [[ -n $text_file ]]
+            then
+              cat $text_file
+            else
+              echo "logit env hasn't been activated"
+            fi
+            ;;
+          (l|location)
+            if [[ -n $parent_dir ]]
+            then
+              echo $parent_dir
+            else
+              echo "logit env hasn't been activated"
+            fi
+            ;;
+        esac
+        shift
+        ;;
+      (-w|--write)
+        env_origin=$(basename $logit_dir)
+        case "$2" in
+          ("")
+            out_file="$env_origin/../LOG.txt"
+            ;;
+          (*)
+            out_file="$env_origin/../$2"
+            ;;
+        esac
+        source "$dir/write.bash"
+        ;;
+      (-t|--title)
+        title="$2"
+        # only append title if it was given
+        if [[ ! -z $title ]]
         then
-          echo "# $TITLE" >> $FILENAME
-          echo "" >> $FILENAME
+          # only append title once to text_file
+          if ! grep -q "$title" "$text_file"
+          then
+            echo "%> Title: $title" >> $text_file
+          fi
         fi
-      fi
-      shift # past argument
-      ;;
-      -m|--message)
-      MESSAGE="$2"
-      if [[ ! -z $MESSAGE ]]
-      then
-        echo $MESSAGE >> $FILENAME
-        echo "" >> $FILENAME
-      fi
-      shift # past argument
-      ;;
+        shift # past argument
+        ;;
+      (-n|--note)
+        note="$2"
+        if [[ ! -z $note ]]
+        then
+          echo "%> Note: $note" >> $text_file
+        fi
+        shift # past argument
+        ;;
     esac
     shift # past argument or value
   done

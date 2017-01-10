@@ -1,10 +1,12 @@
 
 
-echo "%>Deactivated on $DATE at $TIME" >> $FILENAME
-cat $HISTFILE | grep -v "^%>" >> $sys_hist_file
+echo "%> Deactivated on $DATE at $TIME" >> $text_file
+
+#cat $HISTFILE | grep -v "^%>" >> $sys_hist_file
 PS1=$user_prompt
-PROMOT_COMMAND=$user_prompt_cmd
-HISTFILE=$sys_hist_file
+
+#PROMOT_COMMAND=$user_prompt_cmd
+HISTFILE=$sys_histfile
 
 HISTIGNORE=$user_histignore
 HISTTIMEFORMAT=$user_histtimeformat
