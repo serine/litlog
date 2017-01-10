@@ -66,7 +66,7 @@ logit() {
         ;;
       (-s|--show)
         case "$2" in
-          (T|text)
+          (N|notes)
             if [[ -n $text_file ]]
             then
               cat $text_file
@@ -86,8 +86,8 @@ logit() {
         shift
         ;;
       (-w|--write)
-        env_origin=$(basename $logit_dir)
-        out_file="$env_origin/../README.logit"
+        env_origin=$(dirname $logit_dir)
+        out_file="$env_origin/README.logit"
         case "$2" in
           (A|all)
             write_all="write_all"
