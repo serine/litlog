@@ -27,7 +27,7 @@ logit --help # to get help menu
            -n (--note) - add notes to buffer
 
            -s (--show) [OPTIONS]
-                       T (text) - show buffering notes so far
+                       N (notes) - show buffering notes so far
                        L (location) - show location of the log file with notes
 
            -w (--write) [OPTIONS]
