@@ -75,6 +75,7 @@ logit() {
         ;;
       (-w|--write)
         env_origin=$(basename $logit_dir)
+        out_file="$env_origin/../LOG.txt"
         case "$2" in
           (A|all)
             write_all="write_all"
