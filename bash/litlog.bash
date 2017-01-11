@@ -67,23 +67,63 @@ litlog() {
           break
         fi
         source "$litlog_src_dir/deactivate.bash"
+        shift
         ;;
       (-s|--show)
+        #TODO utilise PAGER variable
+        # it is unset for some reason though
         case "$2" in
           (N|notes)
             if [[ -n $litlog_notes_buffer ]]
             then
               cat $litlog_notes_buffer
             else
-              echo "litlog env hasn't been activated"
+              echo "ERROR: You are not in litlog env -> $litlog_env_path. use litlog activate to start one"
+              break
             fi
+            ;;
+          (C|commands)
+            case "$3" in
+              (+[0-9]*) # from the top of the list
+                cmd_input="$3"
+                hist_number="${cmd_input:1}"
+                history | head -n $hist_number
+                ;;
+              (-[0-9]*) # from the bottom of the list
+                cmd_input="$3"
+                hist_number="${cmd_input:1}"
+                history | tail -n $hist_number
+                ;;
+              ([0-9]*-[0-9]*) # range given
+                cmd_input="$3"
+                # get everything before the dash
+                cmd_before="${cmd_input%%-*}"
+                # get everything after the dash
+                cmd_after="${cmd_input##*-}"
+                if [[ $cmd_after -lt $cmd_before ]]
+                then
+                  echo "ERROR: give correct range"
+                  break
+                fi
+                cmd_start="$(($cmd_after-cmd_before+1))"
+                history | head -n $cmd_after | tail -n $cmd_start
+                ;;
+              ([0-9]*) # just a number
+                history | sed -e 's/^[[:space:]]*//' | grep "^$3 "
+                ;;
+              ("") 
+                history
+                ;;
+            esac
+            shift
             ;;
           (L|location)
             if [[ -n $litlog_parent_dir ]]
             then
               echo $litlog_parent_dir
             else
-              echo "litlog env hasn't been activated"
+              echo "ERROR: You are not in litlog env -> $litlog_env_path. use litlog activate to start one"
+              break
             fi
             ;;
           (H|help)
