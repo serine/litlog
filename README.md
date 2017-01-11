@@ -74,7 +74,7 @@ The power of env in ability to add notes with `logit --note "your notes"` and wr
 
 Example:
 
-```
+```BASH
 [biostation]~/wd/z$ source ~/gitrepost/logit/bash/logit.bash
 [biostation]~/wd/z$ logit activate
 (logit_env) [biostation]~/wd/z$ ls
