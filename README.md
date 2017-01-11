@@ -12,10 +12,7 @@
 ## Quick start
 
 ```
-source path/to/litlog/bash/litlog.bash
-litlog --help # to get help menu
-
-  Version: 0.1.1
+  Version: 0.1.2
   Usage: litlog [OPTIONS]
 
   Options: 
@@ -27,12 +24,12 @@ litlog --help # to get help menu
            -n (--note) - add notes to buffer
 
            -s (--show) [OPTIONS]
-                       N (notes) - show buffering notes so far
+                       T (text) - show buffering notes so far
                        L (location) - show location of the log file with notes
 
            -w (--write) [OPTIONS]
                        A (all) - write notes with history to the log file
-                       H (history) - write just the history to the log file
+                       C (commands) - write just the history to the log file
                        N (notes) - write just the notes to the log file
 ```
 
