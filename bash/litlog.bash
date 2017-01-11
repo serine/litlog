@@ -37,7 +37,7 @@ litlog() {
       (act|activate)
         if [[ -n $litlog_env_path ]]
         then
-          echo "ERROR: You are already in litlog env -> $litlog_enev_path"
+          echo "ERROR: You are already in litlog env -> $litlog_env_path"
           break
         fi
 
@@ -61,9 +61,9 @@ litlog() {
         source "$litlog_src_dir/activate.bash"
         ;; # past argument
       (deact|deactivate)
-        if [[ -z $litlog_enev_path ]]
+        if [[ -z $litlog_env_path ]]
         then
-          echo "ERROR: You are not in litlog env -> $litlog_enev_path. use litlog activate to start one"
+          echo "ERROR: You are not in litlog env -> $litlog_env_path. use litlog activate to start one"
           break
         fi
         source "$litlog_src_dir/deactivate.bash"
@@ -79,9 +79,9 @@ litlog() {
             fi
             ;;
           (L|location)
-            if [[ -n $parent_dir ]]
+            if [[ -n $litlog_parent_dir ]]
             then
-              echo $parent_dir
+              echo $litlog_parent_dir
             else
               echo "litlog env hasn't been activated"
             fi
@@ -99,9 +99,9 @@ litlog() {
         shift
         ;;
       (-w|--write)
-        if [[ -z $litlog_enev_path ]]
+        if [[ -z $litlog_env_path ]]
         then
-          echo "ERROR: You are not in litlog env -> $litlog_enev_path. use litlog activate to start one"
+          echo "ERROR: You are not in litlog env -> $litlog_env_path. use litlog activate to start one"
           break
         fi
         case "$2" in
@@ -149,6 +149,10 @@ litlog() {
           echo "%> Note: $note" >> $text_file
         fi
         shift # past argument
+        ;;
+      (*)
+        echo "ERROR: wrong option, use litlog --help to get all of the options"
+        shift
         ;;
     esac
     shift # past argument or value
