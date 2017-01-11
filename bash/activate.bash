@@ -1,22 +1,22 @@
 #TODO think about how to append history back to a ~/.bash_history file
 # if the user flags private then don't append on exit
 
-litlog_user_env_dir="$litlog_env_path/.litlog"
-litlog_notes_buffer="$litlog_user_env_dir/text.log"
-litlog_hist_file="$litlog_user_env_dir/history.log"
+litlog_usr_env_dir="$litlog_env_path/.litlog"
+litlog_notes_buffer="$litlog_usr_env_dir/text.log"
+litlog_hist_file="$litlog_usr_env_dir/history.log"
 
 litlog_log_file="$litlog_env_path/README.lit"
 
-if [[ -d $litlog_user_env_dir ]]
+if [[ -d $litlog_usr_env_dir ]]
 then
   echo "Detected an existing litlog env, adding on to an existing env"
 else
-  mkdir $litlog_user_env_dir
+  mkdir $litlog_usr_env_dir
   touch $litlog_notes_buffer $litlogt_hist_file
 fi
 
 sys_histfile=$HISTFILE
-export HISTFILE=$litlogt_hist_file
+export HISTFILE=$litlog_hist_file
 # append existing history buffer to an old HISTFILE
 history -a $sys_histfile
 # clear history cache
@@ -37,8 +37,8 @@ shopt -s histreedit ## reedit a history substitution line if it failed
 DATE=`date "+%F"`
 TIME=`date "+%T"`
 
-parent_dir=$(dirname $litlog_user_env_dir)
-base_name=$(basename $parent_dir)
+litlog_parent_dir=$(dirname $litlog_usr_env_dir)
+base_name=$(basename $litlog_parent_dir)
 
 if [[ -f $litlog_notes_buffer ]]
 then
@@ -48,7 +48,7 @@ then
     echo "%> Another day at work yay ! $DATE $TIME" >> $litlog_notes_buffer
   else
     echo "%> litlog_env activated on $DATE at $TIME" >> $litlog_notes_buffer
-    echo "%> litlog_env activated in $parent_dir" >> $litlog_notes_buffer
+    echo "%> litlog_env activated in $litlog_parent_dir" >> $litlog_notes_buffer
   fi
 fi
 
@@ -60,6 +60,6 @@ user_prompt_cmd=$PROMPT_COMMAND
 export PROMPT_COMMAND="history -a; history -c; history -r;"
 
 user_prompt=$PS1
-#PS1="(litlogenv@\[\033[1;31m\]$parent_dir\[\033[00m\]) $PS1"
+#PS1="(litlogenv@\[\033[1;31m\]$litlog_parent_dir\[\033[00m\]) $PS1"
 #PS1="(\[\033[1;31m\]litlog_env\[\033[00m\]) $PS1"
 PS1="(litlog_env) $PS1"

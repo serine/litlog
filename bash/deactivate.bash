@@ -27,7 +27,7 @@ shopt -u histappend ## append, no clearouts
 shopt -u histverify ## edit a recalled history line before executing
 shopt -u histreedit ## reedit a history substitution line if it failed 
 
-unset litlog_user_env_dir
+unset litlog_usr_env_dir
 unset litlog_notes_buffer
 unset litlog_hist_file
 unset litlog_log_file
