@@ -111,12 +111,12 @@ README.logit
 %> Note: Trying out this logit tool
 %> Note: Note sure what it does..? logs history ?
 
-\`\`\`
+.```
 2017-01-11 10:41:44: history 
 2017-01-11 10:51:25: history 
 2017-01-11 10:51:29: cd ~/Downloads/
 2017-01-11 10:51:32: pwd
-\`\`\`
+.```
 (logit_env) [biostation]~/wd/z$ cat /proc/version
 Linux version 4.4.0-57-generic (buildd@lgw01-54) (gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.4) ) #78-Ubuntu SMP Fri Dec 9 23:50:32 UTC 2016
 (logit_env) [biostation]~/wd/z$ logit --write history
@@ -128,16 +128,16 @@ Writing out history write_history
 %> Note: Trying out this logit tool
 %> Note: Note sure what it does..? logs history ?
 
-\`\`\`
+.```
 2017-01-11 10:41:44: history 
 2017-01-11 10:51:25: history 
 2017-01-11 10:51:29: cd ~/Downloads/
 2017-01-11 10:51:32: pwd
-\`\`\`
-\`\`\`
+.```
+.```
 10:52:00: cd ~/wd/z/
 10:52:30: cat /proc/version
-\`\`\`
+.```
 (logit_env) [biostation]~/wd/z$ logit deactivate
 [biostation]~/wd/z$
 ```
