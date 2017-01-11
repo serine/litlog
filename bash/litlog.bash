@@ -1,8 +1,8 @@
 
-src="${BASH_SOURCE[0]}"
-dir=$(dirname $src)
 
 litlog() {
+  src="${BASH_SOURCE[0]}"
+  dir=$(dirname $src)
   # number of arguments on cmd
   while [[ $# -gt 0 ]]
   do
@@ -41,6 +41,7 @@ litlog() {
           echo "ERROR: You are already in litlog env -> $litlog_origin"
           break
         fi
+
         case "$2" in
           #(--private)
           #  private="PRIVATE_SESSION!"
