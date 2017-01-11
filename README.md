@@ -74,17 +74,6 @@ The power of env in ability to add notes with `logit --note "your notes"` and wr
 
 Example:
 
-Start my env session
-
-```
-logit activate
-```
-
-```
-logit --title "New project"
-logit --note "This is test project to see how logit works"
-```
-
 ```
 [biostation]~/wd/z$ source ~/gitrepost/logit/bash/logit.bash                                                                                                   
 [biostation]~/wd/z$ logit activate
