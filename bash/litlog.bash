@@ -16,7 +16,7 @@ litlog() {
     case $key in
       (-h|--help)
         echo ""
-        echo "  Version: 0.1.1"
+        echo "  Version: 0.1.2"
         echo "  Usage: litlog [OPTIONS]"
         echo ""
         echo "  Options: "
