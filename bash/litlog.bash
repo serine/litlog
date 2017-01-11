@@ -3,12 +3,7 @@ src="${BASH_SOURCE[0]}"
 dir=$(dirname $src)
 
 litlog() {
-  # unset know variables
-  unset title
-  unset note
-  unset private
   # number of arguments on cmd
-  #echo $#
   while [[ $# -gt 0 ]]
   do
     key="$1"
@@ -41,10 +36,15 @@ litlog() {
         shift
         ;;
       (act|activate)
+        if [[ -n $litlog_origin ]]
+        then
+          echo "ERROR: You are already in litlog env -> $litlog_origin"
+          break
+        fi
         case "$2" in
-          (--private)
-            private="PRIVATE_SESSION!"
-            ;;
+          #(--private)
+          #  private="PRIVATE_SESSION!"
+          #  ;;
           ("")
             env_path="$PWD"
             ;;
@@ -61,6 +61,11 @@ litlog() {
         source "$dir/activate.bash"
         ;; # past argument
       (deact|deactivate)
+        if [[ -z $litlog_origin ]]
+        then
+          echo "ERROR: You are not in litlog env -> $litlog_origin. use litlog activate to start one"
+          break
+        fi
         source "$dir/deactivate.bash"
         ;;
       (-s|--show)
@@ -94,8 +99,11 @@ litlog() {
         shift
         ;;
       (-w|--write)
-        env_origin=$(dirname $litlog_dir)
-        out_file="$env_origin/README.litlog"
+        if [[ -z $litlog_origin ]]
+        then
+          echo "ERROR: You are not in litlog env -> $litlog_origin. use litlog activate to start one"
+          break
+        fi
         case "$2" in
           (A|all)
             write_all="write_all"
