@@ -30,7 +30,7 @@ litlog() {
         echo "           -n (--note) - add notes to buffer"
         echo ""
         echo "           -s (--show) [OPTIONS]"
-        echo "                       T (text) - show buffering notes so far"
+        echo "                       N (notes) - show buffering notes so far"
         echo "                       L (location) - show location of the log file with notes"
         echo ""
         echo "           -w (--write) [OPTIONS]"
@@ -84,7 +84,7 @@ litlog() {
           (H|help)
             echo ""
             echo "    -s (--show) [OPTIONS]"
-            echo "            T (text) - show buffering notes so far"
+            echo "            N (notes) - show buffering notes so far"
             echo "            L (location) - show location of the log file with notes"
             echo ""
             ;;
