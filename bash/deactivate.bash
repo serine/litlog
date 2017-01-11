@@ -26,3 +26,17 @@ HISTCONTROL=$user_histcontrol
 shopt -u histappend ## append, no clearouts
 shopt -u histverify ## edit a recalled history line before executing
 shopt -u histreedit ## reedit a history substitution line if it failed 
+
+unset litlog_dir
+unset text_file
+unset hist_file
+
+unset litlog_origin
+unset litlog_file
+
+unset src
+unset dir
+
+unset title
+unset note
+unset private

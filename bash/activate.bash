@@ -5,6 +5,9 @@ litlog_dir="$env_path/.litlog"
 text_file="$litlog_dir/text.log"
 hist_file="$litlog_dir/history.log"
 
+litlog_origin=$(dirname $litlog_dir)
+litlog_file="$litlog_origin/README.lit"
+
 if [[ -d $litlog_dir ]]
 then
   echo "Detected an existing litlog env, adding on to an existing env"
