@@ -2,9 +2,9 @@
 litlog_hist_all="$litlog_hist_file.all"
 litlog_hist_buffer="$litlog_hist_file.buffer"
 
-write_hist_buffer() {
-  history > $litlog_hist_buffer
-}
+#write_hist_buffer() {
+#  history > $litlog_hist_buffer
+#}
 
 write_hist() {
   history > $litlog_hist_buffer

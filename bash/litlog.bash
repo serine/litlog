@@ -83,16 +83,19 @@ litlog() {
             fi
             ;;
           (C|commands)
+            #TODO also want to support comma separated list of different commands
             case "$3" in
               (+[0-9]*) # from the top of the list
                 cmd_input="$3"
                 hist_number="${cmd_input:1}"
-                history | head -n $hist_number
+                history | head -n $hist_number | sed -e 's/^[[:space:]]*//' >> $litlog_cmd_buffer
+                echo "Adding command(s) to buffer"
                 ;;
               (-[0-9]*) # from the bottom of the list
                 cmd_input="$3"
                 hist_number="${cmd_input:1}"
-                history | tail -n $hist_number
+                history | tail -n $hist_number | sed -e 's/^[[:space:]]*//' >> $litlog_cmd_buffer
+                echo "Adding command(s) to buffer"
                 ;;
               ([0-9]*-[0-9]*) # range given
                 cmd_input="$3"
@@ -106,10 +109,12 @@ litlog() {
                   break
                 fi
                 cmd_start="$(($cmd_after-cmd_before+1))"
-                history | head -n $cmd_after | tail -n $cmd_start
+                history | head -n $cmd_after | tail -n $cmd_start | sed -e 's/^[[:space:]]*//' >> $litlog_cmd_buffer
+                echo "Adding command(s) to buffer"
                 ;;
               ([0-9]*) # just a number
-                history | sed -e 's/^[[:space:]]*//' | grep "^$3 "
+                history | sed -e 's/^[[:space:]]*//' | grep "^$3 " >> $litlog_cmd_buffer
+                echo "Adding command(s) to buffer"
                 ;;
               ("") 
                 history

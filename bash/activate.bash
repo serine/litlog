@@ -5,6 +5,8 @@ litlog_usr_env_dir="$litlog_env_path/.litlog"
 litlog_notes_buffer="$litlog_usr_env_dir/notes_buffer.log"
 litlog_hist_file="$litlog_usr_env_dir/history_file.log"
 
+litlog_cmd_buffer="$litlog_usr_env_dir/cmd_buffer.log"
+
 litlog_log_file="$litlog_env_path/README.lit"
 
 if [[ -d $litlog_usr_env_dir ]]

@@ -1,5 +1,10 @@
 
-echo "%> Deactivated on $DATE at $TIME" >> $litlog_log_file
+if [[ -f $litlog_notes_buffer ]]
+then
+  echo "%> Deactivated on $DATE at $TIME" >> $litlog_notes_buffer
+else
+  echo "ERROR: should have happened !"
+fi
 
 #if [[ -z $private ]]
 litlog_empty=""
@@ -33,6 +38,8 @@ unset litlog_usr_env_dir
 unset litlog_notes_buffer
 unset litlog_hist_file
 unset litlog_log_file
+
+unset litlog_cmd_buffer
 
 unset litlog_src_dir
 # location of the lillog .litlog directory
