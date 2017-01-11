@@ -82,46 +82,6 @@ litlog() {
               break
             fi
             ;;
-          (C|commands)
-            #TODO also want to support comma separated list of different commands
-            case "$3" in
-              (+[0-9]*) # from the top of the list
-                cmd_input="$3"
-                hist_number="${cmd_input:1}"
-                history | head -n $hist_number | sed -e 's/^[[:space:]]*//' >> $litlog_cmd_buffer
-                echo "Adding command(s) to buffer"
-                ;;
-              (-[0-9]*) # from the bottom of the list
-                cmd_input="$3"
-                hist_number="${cmd_input:1}"
-                history | tail -n $hist_number | sed -e 's/^[[:space:]]*//' >> $litlog_cmd_buffer
-                echo "Adding command(s) to buffer"
-                ;;
-              ([0-9]*-[0-9]*) # range given
-                cmd_input="$3"
-                # get everything before the dash
-                cmd_before="${cmd_input%%-*}"
-                # get everything after the dash
-                cmd_after="${cmd_input##*-}"
-                if [[ $cmd_after -lt $cmd_before ]]
-                then
-                  echo "ERROR: give correct range"
-                  break
-                fi
-                cmd_start="$(($cmd_after-cmd_before+1))"
-                history | head -n $cmd_after | tail -n $cmd_start | sed -e 's/^[[:space:]]*//' >> $litlog_cmd_buffer
-                echo "Adding command(s) to buffer"
-                ;;
-              ([0-9]*) # just a number
-                history | sed -e 's/^[[:space:]]*//' | grep "^$3 " >> $litlog_cmd_buffer
-                echo "Adding command(s) to buffer"
-                ;;
-              ("") 
-                history
-                ;;
-            esac
-            shift
-            ;;
           (L|location)
             if [[ -n $litlog_parent_dir ]]
             then
@@ -140,6 +100,68 @@ litlog() {
             ;;
           (*)
             echo "ERROR: wrong option, use --show help to get all of the options"
+            ;;
+        esac
+        shift
+        ;;
+      (-a|--add)
+        case "$2" in
+          (C|commands)
+            #TODO also want to support comma separated list of different commands
+            case "$3" in
+              (+[0-9]*) # from the top of the list
+                cmd_input="$3"
+                hist_number="${cmd_input:1}"
+                history | head -n $hist_number | sed -e 's/^[[:space:]]*//' >> $litlog_cmd_buffer
+                echo "Adding command(s) to buffer"
+                shift
+                ;;
+              (-[0-9]*) # from the bottom of the list
+                cmd_input="$3"
+                hist_number="${cmd_input:1}"
+                history | tail -n $hist_number | sed -e 's/^[[:space:]]*//' >> $litlog_cmd_buffer
+                echo "Adding command(s) to buffer"
+                shift
+                ;;
+              ([0-9]*-[0-9]*) # range given
+                cmd_input="$3"
+                # get everything before the dash
+                cmd_before="${cmd_input%%-*}"
+                # get everything after the dash
+                cmd_after="${cmd_input##*-}"
+                if [[ $cmd_after -lt $cmd_before ]]
+                then
+                  echo "ERROR: give correct range"
+                  break
+                fi
+                cmd_start="$(($cmd_after-cmd_before+1))"
+                history | head -n $cmd_after | tail -n $cmd_start | sed -e 's/^[[:space:]]*//' >> $litlog_cmd_buffer
+                echo "Adding command(s) to buffer"
+                shift
+                ;;
+              ([0-9]*) # just a number
+                history | sed -e 's/^[[:space:]]*//' | grep "^$3 " >> $litlog_cmd_buffer
+                echo "Adding command(s) to buffer"
+                ;;
+              ("") 
+                history
+                shift
+                ;;
+            esac
+            shift
+            ;;
+          (H|help)
+            echo ""
+            echo "    -a (--add) [OPTIONS]"
+            echo "            C (commands) - add selected commands to buffer"
+            echo "            T (title) - add title to buffer"
+            echo "            N (notes) - add notes to buffer"
+            echo ""
+            ;;
+          (*)
+            echo "ERROR: wrong option, use --add help to get all of the options"
+            break
+            ;;
         esac
         shift
         ;;
