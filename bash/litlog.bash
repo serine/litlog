@@ -1,8 +1,7 @@
 
 
 litlog() {
-  litlog_src="${BASH_SOURCE[0]}"
-  litlog_dir=$(dirname $litlog_src)
+  litlog_src_dir="$(dirname ${BASH_SOURCE[0]})"
   # number of arguments on cmd
   while [[ $# -gt 0 ]]
   do
@@ -36,9 +35,9 @@ litlog() {
         shift
         ;;
       (act|activate)
-        if [[ -n $litlog_origin ]]
+        if [[ -n $litlog_env_path ]]
         then
-          echo "ERROR: You are already in litlog env -> $litlog_origin"
+          echo "ERROR: You are already in litlog env -> $litlog_enev_path"
           break
         fi
 
@@ -47,27 +46,27 @@ litlog() {
           #  private="PRIVATE_SESSION!"
           #  ;;
           ("")
-            env_path="$PWD"
+            litlog_env_path="$PWD"
             ;;
           (*)
             if [[ -d "$2" ]]
             then
-              env_path="$2"
+              litlog_env_path="$2"
             else
               echo "ERROR: please specify correct path to directory"
             fi
             ;;
         esac
         shift
-        source "$dir/activate.bash"
+        source "$litlog_src_dir/activate.bash"
         ;; # past argument
       (deact|deactivate)
-        if [[ -z $litlog_origin ]]
+        if [[ -z $litlog_enev_path ]]
         then
-          echo "ERROR: You are not in litlog env -> $litlog_origin. use litlog activate to start one"
+          echo "ERROR: You are not in litlog env -> $litlog_enev_path. use litlog activate to start one"
           break
         fi
-        source "$dir/deactivate.bash"
+        source "$litlog_src_dir/deactivate.bash"
         ;;
       (-s|--show)
         case "$2" in
@@ -100,9 +99,9 @@ litlog() {
         shift
         ;;
       (-w|--write)
-        if [[ -z $litlog_origin ]]
+        if [[ -z $litlog_enev_path ]]
         then
-          echo "ERROR: You are not in litlog env -> $litlog_origin. use litlog activate to start one"
+          echo "ERROR: You are not in litlog env -> $litlog_enev_path. use litlog activate to start one"
           break
         fi
         case "$2" in
@@ -128,7 +127,7 @@ litlog() {
             #exit 1
             ;;
         esac
-        source "$dir/write.bash"
+        source "$litlog_src_dir/write.bash"
         ;;
       (-t|--title)
         title="$2"

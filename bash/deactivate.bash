@@ -27,16 +27,16 @@ shopt -u histappend ## append, no clearouts
 shopt -u histverify ## edit a recalled history line before executing
 shopt -u histreedit ## reedit a history substitution line if it failed 
 
-unset litlog_dir
-unset text_file
-unset hist_file
+unset litlog_user_env_dir
+unset litlog_notes_buffer
+unset litlog_hist_file
+unset litlog_log_file
 
-unset litlog_origin
-unset litlog_file
-
-unset litlog_src
-unset litlog_dir
+unset litlog_src_dir
+# location of the lillog .litlog directory
+unset litlog_env_path
 
 unset title
 unset note
 unset private
+

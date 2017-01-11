@@ -1,23 +1,22 @@
 #TODO think about how to append history back to a ~/.bash_history file
 # if the user flags private then don't append on exit
 
-litlog_dir="$env_path/.litlog"
-text_file="$litlog_dir/text.log"
-hist_file="$litlog_dir/history.log"
+litlog_user_env_dir="$litlog_env_path/.litlog"
+litlog_notes_buffer="$litlog_user_env_dir/text.log"
+litlog_hist_file="$litlog_user_env_dir/history.log"
 
-litlog_origin=$(dirname $litlog_dir)
-litlog_file="$litlog_origin/README.lit"
+litlog_log_file="$litlog_env_path/README.lit"
 
-if [[ -d $litlog_dir ]]
+if [[ -d $litlog_user_env_dir ]]
 then
   echo "Detected an existing litlog env, adding on to an existing env"
 else
-  mkdir $litlog_dir
-  touch $text_file $hist_file
+  mkdir $litlog_user_env_dir
+  touch $litlog_notes_buffer $litlogt_hist_file
 fi
 
 sys_histfile=$HISTFILE
-export HISTFILE=$hist_file
+export HISTFILE=$litlogt_hist_file
 # append existing history buffer to an old HISTFILE
 history -a $sys_histfile
 # clear history cache
@@ -38,18 +37,18 @@ shopt -s histreedit ## reedit a history substitution line if it failed
 DATE=`date "+%F"`
 TIME=`date "+%T"`
 
-parent_dir=$(dirname $litlog_dir)
+parent_dir=$(dirname $litlog_user_env_dir)
 base_name=$(basename $parent_dir)
 
-if [[ -f $text_file ]]
+if [[ -f $litlog_notes_buffer ]]
 then
   # only append date string once a day
-  if grep -q $DATE "$text_file"
+  if grep -q $DATE "$litlog_notes_buffer"
   then
-    echo "%> Another day at work yay ! $DATE $TIME" >> $text_file
+    echo "%> Another day at work yay ! $DATE $TIME" >> $litlog_notes_buffer
   else
-    echo "%> litlog_env activated on $DATE at $TIME" >> $text_file
-    echo "%> litlog_env activated in $parent_dir" >> $text_file
+    echo "%> litlog_env activated on $DATE at $TIME" >> $litlog_notes_buffer
+    echo "%> litlog_env activated in $parent_dir" >> $litlog_notes_buffer
   fi
 fi
 
@@ -64,4 +63,3 @@ user_prompt=$PS1
 #PS1="(litlogenv@\[\033[1;31m\]$parent_dir\[\033[00m\]) $PS1"
 #PS1="(\[\033[1;31m\]litlog_env\[\033[00m\]) $PS1"
 PS1="(litlog_env) $PS1"
-
