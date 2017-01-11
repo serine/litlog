@@ -79,32 +79,47 @@ Example:
 [biostation]~/wd/z$ logit activate
 (logit_env) [biostation]~/wd/z$ ls
 (logit_env) [biostation]~/wd/z$ history 
+
     1  2017-01-11 10:41:44: history 
+
 (logit_env) [biostation]~/wd/z$ logit --title "New project"
 (logit_env) [biostation]~/wd/z$ logit --note "Trying out this logit tool"
-(logit_env) [biostation]~/wd/z$ logit --note "Note sure what it does..? logs history ?"                                                                        
+(logit_env) [biostation]~/wd/z$ logit --note "Note sure what it does..? logs history ?"
 (logit_env) [biostation]~/wd/z$ history 
+
     1  2017-01-11 10:43:31: logit --title "New project"
     2  2017-01-11 10:51:05: logit --note "Trying out this logit tool"
     3  2017-01-11 10:51:21: logit --note "Note sure what it does..? logs history ?"
     4  2017-01-11 10:51:25: history 
+
 (logit_env) [biostation]~/wd/z$ cd ~/Downloads/
 (logit_env) [biostation]~/Downloads$ pwd
+
 /home/kirill/Downloads
+
 (logit_env) [biostation]~/Downloads$ logit --show location
+
 /home/kirill/wd/z
+
 (logit_env) [biostation]~/Downloads$ logit --show notes
+
 %> logit_env activated on 2017-01-11 at 10:41:39
 %> logit_env activated in /home/kirill/wd/z
 %> Title: New project
 %> Note: Trying out this logit tool
 %> Note: Note sure what it does..? logs history ?
+
 (logit_env) [biostation]~/Downloads$ logit --write all
+
 Writing out all write_all
+
 (logit_env) [biostation]~/Downloads$ cd ~/wd/z/
 (logit_env) [biostation]~/wd/z$ ls
+
 README.logit
+
 (logit_env) [biostation]~/wd/z$ cat README.logit 
+
 %> logit_env activated on 2017-01-11 at 10:41:39
 %> logit_env activated in /home/kirill/wd/z
 %> Title: New project
@@ -118,10 +133,15 @@ README.logit
 2017-01-11 10:51:32: pwd
 .```
 (logit_env) [biostation]~/wd/z$ cat /proc/version
+
 Linux version 4.4.0-57-generic (buildd@lgw01-54) (gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.4) ) #78-Ubuntu SMP Fri Dec 9 23:50:32 UTC 2016
+
 (logit_env) [biostation]~/wd/z$ logit --write history
+
 Writing out history write_history
+
 (logit_env) [biostation]~/wd/z$ cat README.logit 
+
 %> logit_env activated on 2017-01-11 at 10:41:39
 %> logit_env activated in /home/kirill/wd/z
 %> Title: New project
@@ -138,6 +158,7 @@ Writing out history write_history
 10:52:00: cd ~/wd/z/
 10:52:30: cat /proc/version
 .```
+
 (logit_env) [biostation]~/wd/z$ logit deactivate
 [biostation]~/wd/z$
 ```
