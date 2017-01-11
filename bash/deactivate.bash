@@ -1,11 +1,13 @@
 
-echo "%> Deactivated on $DATE at $TIME" >> $text_file
+echo "%> Deactivated on $DATE at $TIME" >> $litlog_log_file
 
-if [[ -z $private ]]
+#if [[ -z $private ]]
+litlog_empty=""
+if [[ -z $litlog_empty ]]
 then
   #echo "This should be not a private sesison!"
   #echo "$private"
-  cat $hist_file >> $sys_histfile 
+  cat $litlog_hist_file >> $sys_histfile 
 else
   #echo "This should BE a private sesison!"
   #echo "$private"
@@ -35,6 +37,9 @@ unset litlog_log_file
 unset litlog_src_dir
 # location of the lillog .litlog directory
 unset litlog_env_path
+
+unset litlog_hist_all
+unset litlog_hist_buffer
 
 unset title
 unset note

@@ -1,20 +1,24 @@
 
-hist_all="$litlog_hist_file.all"
-hist_buffer="$litlog_hist_file.buffer"
+litlog_hist_all="$litlog_hist_file.all"
+litlog_hist_buffer="$litlog_hist_file.buffer"
+
+write_hist_buffer() {
+  history > $litlog_hist_buffer
+}
 
 write_hist() {
-  history > $hist_buffer
+  history > $litlog_hist_buffer
   
-  if [[ ! -e $hist_all ]]
+  if [[ ! -e $litlog_hist_all ]]
   then
-    touch $hist_all
+    touch $litlog_hist_all
   fi
   
   echo "\`\`\`" >> $litlog_log_file
-  comm -3 <(cut -f 7- $hist_buffer -d" " | sort ) <(cut -f 7- $hist_all -d" " | sort) | grep -v "litlog*" >> $litlog_log_file
+  comm -3 <(cut -f 7- $litlog_hist_buffer -d" " | sort ) <(cut -f 7- $litlog_hist_all -d" " | sort) | grep -v "litlog*" >> $litlog_log_file
   echo "\`\`\`" >> $litlog_log_file
   
-  cat $hist_buffer > $hist_all
+  cat $litlog_hist_buffer > $litlog_hist_all
 }
 
 if [[ -n $write_notes ]]
@@ -41,6 +45,3 @@ fi
 unset write_all
 unset write_history
 unset write_notes
-
-unset hist_all
-unset hist_buffer

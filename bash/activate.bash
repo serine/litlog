@@ -12,7 +12,7 @@ then
   echo "Detected an existing litlog env, adding on to an existing env"
 else
   mkdir $litlog_usr_env_dir
-  touch $litlog_notes_buffer $litlogt_hist_file
+  touch $litlog_notes_buffer $litlog_hist_file
 fi
 
 sys_histfile=$HISTFILE
