@@ -34,8 +34,8 @@ unset hist_file
 unset litlog_origin
 unset litlog_file
 
-unset src
-unset dir
+unset litlog_src
+unset litlog_dir
 
 unset title
 unset note

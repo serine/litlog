@@ -1,8 +1,8 @@
 
 
 litlog() {
-  src="${BASH_SOURCE[0]}"
-  dir=$(dirname $src)
+  litlog_src="${BASH_SOURCE[0]}"
+  litlog_dir=$(dirname $litlog_src)
   # number of arguments on cmd
   while [[ $# -gt 0 ]]
   do
