@@ -1,15 +1,15 @@
 #TODO think about how to append history back to a ~/.bash_history file
 # if the user flags private then don't append on exit
 
-logit_dir="$env_path/.logit"
-text_file="$logit_dir/text.log"
-hist_file="$logit_dir/history.log"
+litlog_dir="$env_path/.litlog"
+text_file="$litlog_dir/text.log"
+hist_file="$litlog_dir/history.log"
 
-if [[ -d $logit_dir ]]
+if [[ -d $litlog_dir ]]
 then
-  echo "Detected an existing logit env, adding on to an existing env"
+  echo "Detected an existing litlog env, adding on to an existing env"
 else
-  mkdir $logit_dir
+  mkdir $litlog_dir
   touch $text_file $hist_file
 fi
 
@@ -35,7 +35,7 @@ shopt -s histreedit ## reedit a history substitution line if it failed
 DATE=`date "+%F"`
 TIME=`date "+%T"`
 
-parent_dir=$(dirname $logit_dir)
+parent_dir=$(dirname $litlog_dir)
 base_name=$(basename $parent_dir)
 
 if [[ -f $text_file ]]
@@ -45,8 +45,8 @@ then
   then
     echo "%> Another day at work yay ! $DATE $TIME" >> $text_file
   else
-    echo "%> logit_env activated on $DATE at $TIME" >> $text_file
-    echo "%> logit_env activated in $parent_dir" >> $text_file
+    echo "%> litlog_env activated on $DATE at $TIME" >> $text_file
+    echo "%> litlog_env activated in $parent_dir" >> $text_file
   fi
 fi
 
@@ -58,7 +58,7 @@ user_prompt_cmd=$PROMPT_COMMAND
 export PROMPT_COMMAND="history -a; history -c; history -r;"
 
 user_prompt=$PS1
-#PS1="(logitenv@\[\033[1;31m\]$parent_dir\[\033[00m\]) $PS1"
-#PS1="(\[\033[1;31m\]logit_env\[\033[00m\]) $PS1"
-PS1="(logit_env) $PS1"
+#PS1="(litlogenv@\[\033[1;31m\]$parent_dir\[\033[00m\]) $PS1"
+#PS1="(\[\033[1;31m\]litlog_env\[\033[00m\]) $PS1"
+PS1="(litlog_env) $PS1"
 

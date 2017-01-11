@@ -11,5 +11,5 @@ then
   echo "%>Switched logging file from $old_log to  $FILENAME on $DATE at $TIME" >> $FILENAME
 else
   echo "ERROR: This shouldn't have happened "
-  echo "ERROR: Please raise an issue here https://github.com/serine/logit/issues"
+  echo "ERROR: Please raise an issue here https://github.com/serine/litlog/issues"
 fi

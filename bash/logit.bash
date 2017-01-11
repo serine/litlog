@@ -2,7 +2,7 @@
 src="${BASH_SOURCE[0]}"
 dir=$(dirname $src)
 
-logit() {
+litlog() {
   # unset know variables
   unset title
   unset note
@@ -17,14 +17,14 @@ logit() {
       (-h|--help)
         echo ""
         echo "  Version: 0.1.1"
-        echo "  Usage: logit [OPTIONS]"
+        echo "  Usage: litlog [OPTIONS]"
         echo ""
         echo "  Options: "
         echo ""
-        echo "           act (activate) [PATH] - start logit env, default use PWD variable"
-        #echo "           act (activate) [OPTIONS] - to initiate logit env"
-        #echo "                       --private - to initiate private logit env i.e hidden history"
-        echo "           deact (deactivate) - leave logit env"
+        echo "           act (activate) [PATH] - start litlog env, default use PWD variable"
+        #echo "           act (activate) [OPTIONS] - to initiate litlog env"
+        #echo "                       --private - to initiate private litlog env i.e hidden history"
+        echo "           deact (deactivate) - leave litlog env"
         echo ""
         echo "           -t (--title) - add title to buffer"
         echo "           -n (--note) - add notes to buffer"
@@ -71,7 +71,7 @@ logit() {
             then
               cat $text_file
             else
-              echo "logit env hasn't been activated"
+              echo "litlog env hasn't been activated"
             fi
             ;;
           (L|location)
@@ -79,15 +79,15 @@ logit() {
             then
               echo $parent_dir
             else
-              echo "logit env hasn't been activated"
+              echo "litlog env hasn't been activated"
             fi
             ;;
         esac
         shift
         ;;
       (-w|--write)
-        env_origin=$(dirname $logit_dir)
-        out_file="$env_origin/README.logit"
+        env_origin=$(dirname $litlog_dir)
+        out_file="$env_origin/README.litlog"
         case "$2" in
           (A|all)
             write_all="write_all"
