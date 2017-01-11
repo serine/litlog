@@ -19,19 +19,19 @@ write_hist() {
 
 if [[ -n $write_notes ]]
 then
-  echo "Writing out notes $write_notes"
+  echo "Writing out notes to $out_file"
   cat $text_file >> $out_file
   echo "" >> $out_file
 fi
 
 if [[ -n $write_history ]]
 then
-  echo "Writing out history $write_history"
+  echo "Writing out history to $out_file"
   write_hist
 fi
 if [[ -n $write_all ]]
 then
-  echo "Writing out all $write_all"
+  echo "Writing out all to $out_file"
   cat $text_file >> $out_file
   echo "" >> $out_file
   write_hist

@@ -35,7 +35,7 @@ litlog() {
         echo ""
         echo "           -w (--write) [OPTIONS]"
         echo "                       A (all) - write notes with history to the log file"
-        echo "                       H (history) - write just the history to the log file"
+        echo "                       C (commands) - write just the history to the log file"
         echo "                       N (notes) - write just the notes to the log file"
         echo ""
         shift
@@ -54,7 +54,6 @@ litlog() {
               env_path="$2"
             else
               echo "ERROR: please specify correct path to directory"
-              exit 1
             fi
             ;;
         esac
@@ -82,6 +81,15 @@ litlog() {
               echo "litlog env hasn't been activated"
             fi
             ;;
+          (H|help)
+            echo ""
+            echo "    -s (--show) [OPTIONS]"
+            echo "            T (text) - show buffering notes so far"
+            echo "            L (location) - show location of the log file with notes"
+            echo ""
+            ;;
+          (*)
+            echo "ERROR: wrong option, use --show help to get all of the options"
         esac
         shift
         ;;
@@ -92,18 +100,24 @@ litlog() {
           (A|all)
             write_all="write_all"
             ;;
-          (H|history)
+          (C|commands)
             write_history="write_history"
             ;;
           (N|notes)
             write_notes="write_notes"
             ;;
-          #("")
-          #  out_file="$env_origin/../LOG.txt"
-          #  ;;
-          #(*)
-          #  out_file="$env_origin/../$2"
-          #  ;;
+          (H|help)
+            echo ""
+            echo "    -w (--write) [OPTIONS]"
+            echo "            A (all) - write notes with history to the log file"
+            echo "            C (commands) - write just the history to the log file"
+            echo "            N (notes) - write just the notes to the log file"
+            echo ""
+            ;;
+          (*)
+            echo "ERROR: wrong option, use --write help to get all of the options"
+            #exit 1
+            ;;
         esac
         source "$dir/write.bash"
         ;;
