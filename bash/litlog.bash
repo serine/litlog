@@ -71,9 +71,9 @@ litlog() {
       (-s|--show)
         case "$2" in
           (N|notes)
-            if [[ -n $text_file ]]
+            if [[ -n $litlog_notes_buffer ]]
             then
-              cat $text_file
+              cat $litlog_notes_buffer
             else
               echo "litlog env hasn't been activated"
             fi
@@ -107,12 +107,15 @@ litlog() {
         case "$2" in
           (A|all)
             write_all="write_all"
+            shift
             ;;
           (C|commands)
             write_history="write_history"
+            shift
             ;;
           (N|notes)
             write_notes="write_notes"
+            shift
             ;;
           (H|help)
             echo ""
@@ -121,12 +124,14 @@ litlog() {
             echo "            C (commands) - write just the history to the log file"
             echo "            N (notes) - write just the notes to the log file"
             echo ""
+            shift
             ;;
           (*)
             echo "ERROR: wrong option, use --write help to get all of the options"
-            #exit 1
+            break
             ;;
         esac
+        shift
         source "$litlog_src_dir/write.bash"
         ;;
       (-t|--title)
@@ -134,10 +139,10 @@ litlog() {
         # only append title if it was given
         if [[ ! -z $title ]]
         then
-          # only append title once to text_file
-          if ! grep -q "$title" "$text_file"
+          # only append title once to litlog_notes_buffer
+          if ! grep -q "$title" "$litlog_notes_buffer"
           then
-            echo "%> Title: $title" >> $text_file
+            echo "%> Title: $title" >> $litlog_notes_buffer
           fi
         fi
         shift # past argument
@@ -146,7 +151,7 @@ litlog() {
         note="$2"
         if [[ ! -z $note ]]
         then
-          echo "%> Note: $note" >> $text_file
+          echo "%> Note: $note" >> $litlog_notes_buffer
         fi
         shift # past argument
         ;;

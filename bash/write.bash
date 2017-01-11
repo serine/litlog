@@ -20,7 +20,7 @@ write_hist() {
 if [[ -n $write_notes ]]
 then
   echo "Writing out notes to $litlog_log_file"
-  cat $text_file >> $litlog_log_file
+  cat $litlog_notes_buffer >> $litlog_log_file
   echo "" >> $litlog_log_file
 fi
 
@@ -33,7 +33,7 @@ fi
 if [[ -n $write_all ]]
 then
   echo "Writing out all to $litlog_log_file"
-  cat $text_file >> $litlog_log_file
+  cat $litlog_notes_buffer >> $litlog_log_file
   echo "" >> $litlog_log_file
   write_hist
 fi

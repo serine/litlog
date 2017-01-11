@@ -2,8 +2,8 @@
 # if the user flags private then don't append on exit
 
 litlog_usr_env_dir="$litlog_env_path/.litlog"
-litlog_notes_buffer="$litlog_usr_env_dir/text.log"
-litlog_hist_file="$litlog_usr_env_dir/history.log"
+litlog_notes_buffer="$litlog_usr_env_dir/notes_buffer.log"
+litlog_hist_file="$litlog_usr_env_dir/history_file.log"
 
 litlog_log_file="$litlog_env_path/README.lit"
 
