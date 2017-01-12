@@ -41,6 +41,7 @@ unset litlog_log_file
 
 unset litlog_cmd_buffer
 unset litlog_cmd_tmp
+unset litlog_cmd_seen
 
 unset litlog_src_dir
 # location of the lillog .litlog directory

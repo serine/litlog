@@ -56,7 +56,7 @@ add_given_hist() {
 add_nodups_hist() {
   if [[ ! -e $litlog_cmd_buffer ]]
   then
-    touch $litlog_cmd_buffer
+    touch $litlog_cmd_seen
   fi
   #comm -3 <(cut -f 7- $litlog_hist_buffer -d" " | sort ) <(cut -f 7- $litlog_hist_all -d" " | sort) | grep -v "litlog*" >> $litlog_cmd_buffer
   comm -3 <(history | \
@@ -64,7 +64,7 @@ add_nodups_hist() {
             cut -f 2- -d" " | \
             sed -e 's/^[[:space:]]*//' | \
             sort) \
-          <(sort $litlog_cmd_buffer) > $litlog_cmd_tmp
+          <(sort $litlog_cmd_seen) > $litlog_cmd_tmp
          #<(cut -f 2- $litlog_cmd_buffer -d" " | \
          #  sed -e 's/^[[:space:]]*//' | \
          #  sort) > $litlog_cmd_tmp
@@ -74,5 +74,7 @@ add_nodups_hist() {
     sed -e 's/^[[:space:]]*//' | \
     grep -v "litlog*" >> $litlog_cmd_buffer
   echo "MESSAGE: Adding ALL! command(s) to buffer"
+  # move buffering command to seen
+  cat $litlog_cmd_buffer >> $litlog_cmd_seen 
   rm $litlog_cmd_tmp
 }
