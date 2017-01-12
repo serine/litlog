@@ -40,6 +40,7 @@ unset litlog_hist_file
 unset litlog_log_file
 
 unset litlog_cmd_buffer
+unset litlog_cmd_tmp
 
 unset litlog_src_dir
 # location of the lillog .litlog directory
@@ -52,3 +53,22 @@ unset title
 unset note
 unset private
 
+# remove all adding functions from the shell environment
+unset add_top_hist
+unset add_bottom_hist
+unset add_range_hist
+unset add_given_hist
+unset add_nodups_hist
+
+# remove other functions
+unset add_note
+
+# remove all writing functions from shell environment
+unset write_all
+unset write_notes
+unset write_cmd
+
+# remove all show functions from the whell environment
+unset show_cmd
+unset show_notes
+unset show_location
