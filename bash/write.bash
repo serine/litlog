@@ -1,51 +1,25 @@
 
-litlog_hist_all="$litlog_hist_file.all"
-litlog_hist_buffer="$litlog_hist_file.buffer"
-
-#write_hist_buffer() {
-#  history > $litlog_hist_buffer
-#}
-
-#write_hist() {
-#  history > $litlog_hist_buffer
-#  
-#  if [[ ! -e $litlog_hist_all ]]
-#  then
-#    touch $litlog_hist_all
-#  fi
-#  
-#  echo "\`\`\`" >> $litlog_log_file
-#  comm -3 <(cut -f 7- $litlog_hist_buffer -d" " | sort ) <(cut -f 7- $litlog_hist_all -d" " | sort) | grep -v "litlog*" >> $litlog_log_file
-#  echo "\`\`\`" >> $litlog_log_file
-#  
-#  cat $litlog_hist_buffer > $litlog_hist_all
-#}
-
-if [[ -n $write_notes ]]
-then
-  echo "Writing out notes to $litlog_log_file"
+write_all() {
   cat $litlog_notes_buffer >> $litlog_log_file
   echo "" >> $litlog_log_file
-fi
-
-if [[ -n $write_history ]]
-then
-  echo "Writing out history to $litlog_log_file"
   cat $litlog_cmd_buffer >> $litlog_log_file
-  # just in case use has no clober set
-  rm $littlog_cmd_buffer
-  touch $littlog_cmd_buffer
-  #write_hist
-fi
+  echo "Writing out notes then commands to $litlog_log_file"
+  rm $litlog_notes_buffer $littlog_cmd_buffer 
+  touch $littlog_notes $littlog_cmd_buffer
+}
 
-if [[ -n $write_all ]]
-then
-  echo "Writing out all to $litlog_log_file"
+write_notes() {
   cat $litlog_notes_buffer >> $litlog_log_file
-  echo "" >> $litlog_log_file
-  #write_hist
-fi
+  echo "Writing out notes to $litlog_log_file"
+  rm $litlog_notes_buffer
+  touch $littlog_notes_buffer
+}
 
-unset write_all
-unset write_history
-unset write_notes
+write_cmd() {
+  echo "\`\`\`" >> $litlog_log_file
+  cat $litlog_cmd_buffer >> $litlog_log_file
+  echo "\`\`\`" >> $litlog_log_file
+  echo "Writing out notes to $litlog_log_file"
+  rm $litlog_cmd_buffer
+  touch $littlog_cmd_buffer
+}
