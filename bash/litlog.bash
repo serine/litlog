@@ -10,7 +10,7 @@ litlog() {
     case $key in
       (-h|--help)
         echo ""
-        echo "  Version: 0.1.3"
+        echo "  Version: 0.1.2"
         echo "  Usage: litlog [OPTIONS]"
         echo ""
         echo "  Options: "
@@ -20,17 +20,24 @@ litlog() {
         #echo "                       --private - to initiate private litlog env i.e hidden history"
         echo "           deact (deactivate) - leave litlog env"
         echo ""
-        echo "           -t (--title) - add title to buffer"
-        echo "           -n (--note) - add notes to buffer"
-        echo ""
         echo "           -s (--show) [OPTIONS]"
-        echo "                       N (notes) - show buffering notes so far"
-        echo "                       L (location) - show location of the log file with notes"
+        echo "                       C (commands) [OPTIONS] - show buffering commands"
+        echo "                       N (notes) - show buffering notes"
+        echo "                       L (location) - show location of the log file"
+        echo ""
+        echo "           -a (--add) [OPTIONS]"
+        echo "                       C (commands) - add commands to the buffer"
+        echo "                               +n - get n numder of lines from the top of the history file"
+        echo "                               -n - get n numder of lines from the bottom of the history file"
+        echo "                               n - get nth history entry from the history file"
+        echo "                               n-m - get n-m range from the history file"
+        echo ""
+        echo "                       N (notes) - add notes to the buffer"
+        echo "                       T (title) - add title to the buffer"
         echo ""
         echo "           -w (--write) [OPTIONS]"
-        echo "                       A (all) - write notes with history to the log file"
-        echo "                       C (commands) - write just the history to the log file"
-        echo "                       N (notes) - write just the notes to the log file"
+        echo "                       C (commands) - write commands to the log file"
+        echo "                       N (notes) - write notes to the log file"
         echo ""
         shift
         ;;
@@ -72,24 +79,23 @@ litlog() {
       (-s|--show)
         #TODO utilise PAGER variable
         # it is unset for some reason though
+        source "$litlog_src_dir/show.bash"
         case "$2" in
+          ("")
+            show_notes
+            show_cmd
+            ;;
+          (C|commands) 
+            show_cmd
+            shift
+            ;;
           (N|notes)
-            if [[ -n $litlog_notes_buffer ]]
-            then
-              cat $litlog_notes_buffer
-            else
-              echo "ERROR: You are not in litlog env -> $litlog_env_path. use litlog activate to start one"
-              break
-            fi
+            show_notes
+            shift
             ;;
           (L|location)
-            if [[ -n $litlog_parent_dir ]]
-            then
-              echo $litlog_parent_dir
-            else
-              echo "ERROR: You are not in litlog env -> $litlog_env_path. use litlog activate to start one"
-              break
-            fi
+            show_location
+            shift
             ;;
           (H|help)
             echo ""
@@ -105,55 +111,60 @@ litlog() {
         shift
         ;;
       (-a|--add)
+        source "$litlog_src_dir/add.bash"
         case "$2" in
           (C|commands)
             #TODO also want to support comma separated list of different commands
             case "$3" in
               (+[0-9]*) # from the top of the list
-                cmd_input="$3"
-                hist_number="${cmd_input:1}"
-                history | head -n $hist_number | sed -e 's/^[[:space:]]*//' >> $litlog_cmd_buffer
-                echo "Adding command(s) to buffer"
+                add_top_hist "$3"
                 shift
                 ;;
               (-[0-9]*) # from the bottom of the list
-                cmd_input="$3"
-                hist_number="${cmd_input:1}"
-                history | tail -n $hist_number | sed -e 's/^[[:space:]]*//' >> $litlog_cmd_buffer
-                echo "Adding command(s) to buffer"
+                add_bottom_hist "$3"
                 shift
                 ;;
               ([0-9]*-[0-9]*) # range given
-                cmd_input="$3"
-                # get everything before the dash
-                cmd_before="${cmd_input%%-*}"
-                # get everything after the dash
-                cmd_after="${cmd_input##*-}"
-                if [[ $cmd_after -lt $cmd_before ]]
-                then
-                  echo "ERROR: give correct range"
-                  break
-                fi
-                cmd_start="$(($cmd_after-cmd_before+1))"
-                history | head -n $cmd_after | tail -n $cmd_start | sed -e 's/^[[:space:]]*//' >> $litlog_cmd_buffer
-                echo "Adding command(s) to buffer"
+                add_range_hist "$3"
                 shift
                 ;;
               ([0-9]*) # just a number
-                history | sed -e 's/^[[:space:]]*//' | grep "^$3 " >> $litlog_cmd_buffer
-                echo "Adding command(s) to buffer"
+                add_given_hist "$3"
+                shift
                 ;;
               ("") 
-                history
+                add_nodups_hist
                 shift
                 ;;
             esac
             shift
             ;;
+          (T|title)
+            title="$3"
+            # only append title if it was given
+            if [[ ! -z $title ]]
+            then
+              # only append title once to litlog_notes_buffer
+              if ! grep -q "$title" "$litlog_notes_buffer"
+              then
+                echo "%> Title: $title" >> $litlog_notes_buffer
+              fi
+            fi
+            shift # past argument
+            ;;
+          (N|notes)
+            add_note "$3"
+            shift # past argument
+            ;;
           (H|help)
             echo ""
             echo "    -a (--add) [OPTIONS]"
             echo "            C (commands) - add selected commands to buffer"
+            echo "                    +n - get n numder of lines from the top of the history file"
+            echo "                    -n - get n numder of lines from the bottom of the history file"
+            echo "                    n - get nth history entry from the history file"
+            echo "                    n-m - get n-m range from the history file"
+            echo ""
             echo "            T (title) - add title to buffer"
             echo "            N (notes) - add notes to buffer"
             echo ""
@@ -166,28 +177,28 @@ litlog() {
         shift
         ;;
       (-w|--write)
+        source "$litlog_src_dir/write.bash"
         if [[ -z $litlog_env_path ]]
         then
           echo "ERROR: You are not in litlog env -> $litlog_env_path. use litlog activate to start one"
           break
         fi
         case "$2" in
-          (A|all)
-            write_all="write_all"
+          ("")
+            write_all
             shift
             ;;
           (C|commands)
-            write_history="write_history"
+            write_cmd
             shift
             ;;
           (N|notes)
-            write_notes="write_notes"
+            write_notes
             shift
             ;;
           (H|help)
             echo ""
             echo "    -w (--write) [OPTIONS]"
-            echo "            A (all) - write notes with history to the log file"
             echo "            C (commands) - write just the history to the log file"
             echo "            N (notes) - write just the notes to the log file"
             echo ""
@@ -199,29 +210,28 @@ litlog() {
             ;;
         esac
         shift
-        source "$litlog_src_dir/write.bash"
         ;;
-      (-t|--title)
-        title="$2"
-        # only append title if it was given
-        if [[ ! -z $title ]]
-        then
-          # only append title once to litlog_notes_buffer
-          if ! grep -q "$title" "$litlog_notes_buffer"
-          then
-            echo "%> Title: $title" >> $litlog_notes_buffer
-          fi
-        fi
-        shift # past argument
-        ;;
-      (-n|--note)
-        note="$2"
-        if [[ ! -z $note ]]
-        then
-          echo "%> Note: $note" >> $litlog_notes_buffer
-        fi
-        shift # past argument
-        ;;
+      #(-t|--title)
+      #  title="$2"
+      #  # only append title if it was given
+      #  if [[ ! -z $title ]]
+      #  then
+      #    # only append title once to litlog_notes_buffer
+      #    if ! grep -q "$title" "$litlog_notes_buffer"
+      #    then
+      #      echo "%> Title: $title" >> $litlog_notes_buffer
+      #    fi
+      #  fi
+      #  shift # past argument
+      #  ;;
+      #(-n|--note)
+      #  note="$2"
+      #  if [[ ! -z $note ]]
+      #  then
+      #    echo "%> Note: $note" >> $litlog_notes_buffer
+      #  fi
+      #  shift # past argument
+      #  ;;
       (*)
         echo "ERROR: wrong option, use litlog --help to get all of the options"
         shift
