@@ -2,11 +2,11 @@
 show_cmd() {
   if [[ -n $litlog_cmd_buffer ]]
   then
-    if [[ ! -e $litlog_cmd_buffer ]]
+    if [[ -e $litlog_cmd_buffer || -s $litlog_cmd_buffer ]]
     then
-      echo "MESSAGE: Commands buffer is empty. Use --add to add commands"
-    else
       cat $litlog_cmd_buffer
+    else
+      echo "MESSAGE: Commands buffer is empty. Use --add to add commands"
     fi
   else
     echo "ERROR: You are not in litlog env -> $litlog_env_path. use litlog activate to start one"
@@ -16,11 +16,11 @@ show_cmd() {
 show_notes() {
   if [[ -n $litlog_notes_buffer ]]
   then
-    if [[ ! -e $litlog_notes_buffer ]]
+    if [[ -e $litlog_notes_buffer || -s $litlog_notes_buffer ]]
     then
-      echo "MESSAGE: Notes buffer is empty. Use --add to add commands"
-    else
       cat $litlog_notes_buffer
+    else
+      echo "MESSAGE: Notes buffer is empty. Use --add to add commands"
     fi
   else
     echo "ERROR: You are not in litlog env -> $litlog_env_path. use litlog activate to start one"
