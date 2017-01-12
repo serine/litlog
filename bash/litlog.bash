@@ -1,6 +1,12 @@
 
 
 litlog() {
+
+  if [[ -z "$@" ]]
+  then
+    litlog -h
+  fi
+
   litlog_src_dir="$(dirname ${BASH_SOURCE[0]})"
   # number of arguments on cmd
   while [[ $# -gt 0 ]]
