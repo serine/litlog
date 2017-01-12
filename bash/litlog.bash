@@ -185,7 +185,8 @@ litlog() {
         fi
         case "$2" in
           ("")
-            write_all
+            write_notes
+            write_cmd
             shift
             ;;
           (C|commands)
