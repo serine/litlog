@@ -9,7 +9,7 @@ add_top_hist() {
     sed -e 's/^[[:space:]]*//' | \
     cut -f 2- -d" " | \
     sed -e 's/^[[:space:]]*//' >> $litlog_cmd_buffer
-  echo "Adding command(s) to buffer"
+  echo "MESSAGE: Adding command(s) to buffer"
 }
 
 add_bottom_hist() {
@@ -20,7 +20,7 @@ add_bottom_hist() {
     sed -e 's/^[[:space:]]*//' | \
     cut -f 2- -d" " | \
     sed -e 's/^[[:space:]]*//' >> $litlog_cmd_buffer
-  echo "Adding command(s) to buffer"
+  echo "MESSAGE: Adding command(s) to buffer"
 }
 
 add_range_hist() {
@@ -41,7 +41,7 @@ add_range_hist() {
     sed -e 's/^[[:space:]]*//' | \
     cut -f 2- -d" " | \
     sed -e 's/^[[:space:]]*//' >> $litlog_cmd_buffer
-  echo "Adding command(s) to buffer"
+  echo "MESSAGE: Adding command(s) to buffer"
 }
 
 add_given_hist() {
@@ -50,7 +50,7 @@ add_given_hist() {
     grep "^$1 " | \
     cut -f 2- -d" " | \
     sed -e 's/^[[:space:]]*//' >> $litlog_cmd_buffer
-  echo "Adding command(s) to buffer"
+  echo "MESSAGE: Adding command(s) to buffer"
 }
 
 add_nodups_hist() {
@@ -73,6 +73,6 @@ add_nodups_hist() {
   cat $litlog_cmd_tmp | \
     sed -e 's/^[[:space:]]*//' | \
     grep -v "litlog*" >> $litlog_cmd_buffer
-  echo "Adding ALL! command(s) to buffer"
+  echo "MESSAGE: Adding ALL! command(s) to buffer"
   rm $litlog_cmd_tmp
 }
