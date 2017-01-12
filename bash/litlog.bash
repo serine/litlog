@@ -26,7 +26,7 @@ litlog() {
         echo "                       L (location) - show location of the log file"
         echo ""
         echo "           -a (--add) [OPTIONS]"
-        echo "                       C (commands) - add commands to the buffer"
+        echo "                       C (commands) [OPTIONS] - add commands to the buffer"
         echo "                               +n - get n numder of lines from the top of the history file"
         echo "                               -n - get n numder of lines from the bottom of the history file"
         echo "                               n - get nth history entry from the history file"
