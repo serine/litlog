@@ -9,6 +9,8 @@ litlog_cmd_buffer="$litlog_usr_env_dir/cmd_buffer.log"
 
 litlog_log_file="$litlog_env_path/README.lit"
 
+#TODO should check for existens of all log/buffer files
+# in case accidental deletion/curruption
 if [[ -d $litlog_usr_env_dir ]]
 then
   echo "Detected an existing litlog env, adding on to an existing env"
