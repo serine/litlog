@@ -21,7 +21,7 @@ litlog() {
         echo "           deact (deactivate) - leave litlog env"
         echo ""
         echo "           -s (--show) [OPTIONS]"
-        echo "                       C (commands) [OPTIONS] - show buffering commands"
+        echo "                       C (commands) - show buffering commands"
         echo "                       N (notes) - show buffering notes"
         echo "                       L (location) - show location of the log file"
         echo ""
