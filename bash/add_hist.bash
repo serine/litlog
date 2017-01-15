@@ -45,9 +45,12 @@ add_range_hist() {
 }
 
 add_given_hist() {
+
+  cmd_input="$1"+1
+
   history | \
     sed -e 's/^[[:space:]]*//' | \
-    grep "^$1 " | \
+    grep "^$cmd_input " | \
     cut -f 2- -d" " | \
     sed -e 's/^[[:space:]]*//' >> $litlog_cmd_buffer
   echo "MESSAGE: Adding command(s) to buffer"
