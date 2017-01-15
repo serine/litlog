@@ -38,7 +38,8 @@ user_histcontrol=$HISTCONTROL
 
 export HISTIGNORE="history\s+:echo\s%>*: $HISTIGNORE"
 export HISTTIMEFORMAT="%F %T: "
-export HISTCONTROL=ignoredups:erasedups
+#export HISTCONTROL=ignoredups:erasedups
+export HISTCONTROL=ignoredups:ignorespace
 #
 shopt -s histappend ## append, no clearouts
 shopt -s histverify ## edit a recalled history line before executing
