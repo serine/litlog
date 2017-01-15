@@ -47,7 +47,7 @@ add_range_hist() {
 add_given_hist() {
 
   cmd_input="$1"
-  cmd_input=$((cmd_input+1))
+  #cmd_input=$((cmd_input+1))
 
   history | \
     sed -e 's/^[[:space:]]*//' | \
