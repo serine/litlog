@@ -78,3 +78,16 @@ add_nodups_hist() {
   cat $litlog_cmd_buffer >> $litlog_cmd_seen 
   rm $litlog_cmd_tmp
 }
+
+add_list_hist() {
+  cmd_input=$1
+  # convert commas to space
+  get_cmd_str="${cmd_input//,/ }"
+  # conver string to array
+  cmd_array=($get_cmd_str)
+  
+  for i in ${cmd_array[@]}
+  do
+    add_given_hist $i
+  done
+}

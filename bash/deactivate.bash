@@ -5,7 +5,7 @@ then
   echo "--------------------------------------------------------------------------------" >> $litlog_meta_buffer 
   cat "$litlog_meta_buffer" >> $litlog_log_file
 else
-  echo "ERROR: should have happened !"
+  echo "ERROR: shouldn't have happened deactivate.bash !"
 fi
 
 #if [[ -z $private ]]

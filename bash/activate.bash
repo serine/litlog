@@ -19,7 +19,10 @@ then
   echo "Detected an existing litlog env, adding on to an existing env"
 else
   mkdir $litlog_usr_env_dir
-  touch $litlog_notes_buffer $litlog_hist_file
+
+  touch $litlog_notes_buffer \
+        $litlog_hist_file \
+        $litlog_meta_buffer 
 fi
 
 sys_histfile=$HISTFILE
@@ -47,15 +50,20 @@ TIME=`date "+%T"`
 litlog_parent_dir=$(dirname $litlog_usr_env_dir)
 base_name=$(basename $litlog_parent_dir)
 
-# only append date string once a day
-if grep -q $DATE "$litlog_meta_buffer"
+if [[ -f $litlog_meta_buffer ]]
 then
-  echo "%> Another day at work yay ! $DATE $TIME" >> $litlog_meta_buffer
-  echo "" >> $litlog_meta_buffer 
+  # only append date string once a day
+  if grep -q $DATE "$litlog_meta_buffer"
+  then
+    echo "%> Another day at work yay ! $DATE $TIME" >> $litlog_meta_buffer
+    echo "" >> $litlog_meta_buffer 
+  else
+    echo "%> litlog_env activated on $DATE at $TIME" >> $litlog_meta_buffer
+    echo "%> litlog_env activated in $litlog_parent_dir" >> $litlog_meta_buffer
+    echo "" >> $litlog_meta_buffer 
+  fi
 else
-  echo "%> litlog_env activated on $DATE at $TIME" >> $litlog_meta_buffer
-  echo "%> litlog_env activated in $litlog_parent_dir" >> $litlog_meta_buffer
-  echo "" >> $litlog_meta_buffer 
+  echo "ERROR: shouldn't have happened activate.bash !"
 fi
 
 # https://www.gnu.org/software/bash/manual/bashref.html#index-history

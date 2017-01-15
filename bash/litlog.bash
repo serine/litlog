@@ -122,29 +122,36 @@ litlog() {
         source "$litlog_src_dir/add.bash"
         case "$2" in
           (C|commands)
-            #TODO also want to support comma separated list of different commands
-            case "$3" in
-              (+[0-9]*) # from the top of the list
-                add_top_hist "$3"
-                shift
-                ;;
-              (-[0-9]*) # from the bottom of the list
-                add_bottom_hist "$3"
-                shift
-                ;;
-              ([0-9]*-[0-9]*) # range given
-                add_range_hist "$3"
-                shift
-                ;;
-              ([0-9]*) # just a number
-                add_given_hist "$3"
-                shift
-                ;;
-              ("") 
+
+            hist_input=$3
+            
+            if [[ $hist_input =~ ^[0-9]+$ ]]
+            then
+                add_given_hist "$hist_input"
+                echo "Number"
+            elif [[ ${hist_input:0:1} == "-" && ${hist_input:1} =~ ^[0-9]+$ ]]
+            then
+                add_bottom_hist "$hist_input"
+                echo "Minus"
+            elif [[ ${hist_input:0:1} == "+" && ${hist_input:1} =~ ^[0-9]+$ ]]
+            then
+                add_top_hist "$hist_input"
+                echo "Plus"
+            elif [[ $hist_input =~ "-" && ${hist_input%%-*} =~ ^[0-9]+$ && ${hist_input##*-} =~ ^[0-9]+$ ]]
+            then
+                add_range_hist "$hist_input"
+                echo "Rage"
+            elif [[ $hist_input =~ "," && ${hist_input%%,*} =~ ^[0-9]+$ && ${hist_input##*,} =~ ^[0-9]+$ ]]
+            then
+                add_list_hist "$hist_input"
+                echo "List"
+            elif [[ -z $hist_input ]]
+            then
                 add_nodups_hist
-                shift
-                ;;
-            esac
+                echo "Empty"
+            else
+                echo "ERROR: wrong option, use litlog --add help to get all of the options"
+            fi
             shift
             ;;
           (T|title)
