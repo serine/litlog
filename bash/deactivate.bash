@@ -1,7 +1,9 @@
 
-if [[ -f $litlog_notes_buffer ]]
+if [[ -f $litlog_meta_buffer && -f $litlog_log_file ]]
 then
-  echo "%> Deactivated on $DATE at $TIME" >> $litlog_notes_buffer
+  echo "%> Deactivated on $DATE at $TIME" >> $litlog_meta_buffer 
+  echo "--------------------------------------------------------------------------------" >> $litlog_meta_buffer 
+  cat "$litlog_meta_buffer" >> $litlog_log_file
 else
   echo "ERROR: should have happened !"
 fi
@@ -73,3 +75,6 @@ unset write_cmd
 unset show_cmd
 unset show_notes
 unset show_location
+
+#
+unset litlog_meta_buffer

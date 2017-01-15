@@ -90,6 +90,7 @@ litlog() {
           ("")
             show_notes
             show_cmd
+            show_metadata
             ;;
           (C|commands) 
             show_cmd
@@ -106,6 +107,7 @@ litlog() {
           (H|help)
             echo ""
             echo "    -s (--show) [OPTIONS]"
+            echo "            C (commands) - show buffering commands so far"
             echo "            N (notes) - show buffering notes so far"
             echo "            L (location) - show location of the log file with notes"
             echo ""

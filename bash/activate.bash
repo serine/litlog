@@ -8,6 +8,8 @@ litlog_hist_file="$litlog_usr_env_dir/history_file.log"
 litlog_cmd_buffer="$litlog_usr_env_dir/cmd_buffer.log"
 litlog_cmd_seen="$litlog_usr_env_dir/cmd_seen.log"
 
+litlog_meta_buffer="$litlog_usr_env_dir/metadata_buffer.log"
+
 litlog_log_file="$litlog_env_path/README.lit"
 
 #TODO should check for existens of all log/buffer files
@@ -45,16 +47,15 @@ TIME=`date "+%T"`
 litlog_parent_dir=$(dirname $litlog_usr_env_dir)
 base_name=$(basename $litlog_parent_dir)
 
-if [[ -f $litlog_notes_buffer ]]
+# only append date string once a day
+if grep -q $DATE "$litlog_meta_buffer"
 then
-  # only append date string once a day
-  if grep -q $DATE "$litlog_notes_buffer"
-  then
-    echo "%> Another day at work yay ! $DATE $TIME" >> $litlog_notes_buffer
-  else
-    echo "%> litlog_env activated on $DATE at $TIME" >> $litlog_notes_buffer
-    echo "%> litlog_env activated in $litlog_parent_dir" >> $litlog_notes_buffer
-  fi
+  echo "%> Another day at work yay ! $DATE $TIME" >> $litlog_meta_buffer
+  echo "" >> $litlog_meta_buffer 
+else
+  echo "%> litlog_env activated on $DATE at $TIME" >> $litlog_meta_buffer
+  echo "%> litlog_env activated in $litlog_parent_dir" >> $litlog_meta_buffer
+  echo "" >> $litlog_meta_buffer 
 fi
 
 # https://www.gnu.org/software/bash/manual/bashref.html#index-history

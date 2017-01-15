@@ -14,3 +14,7 @@ write_cmd() {
   rm $litlog_cmd_buffer
   touch $litlog_cmd_buffer
 }
+
+#write_metadata() {
+#  cat $litlog_meta_buffer >> $litlog_log_file 
+#}
