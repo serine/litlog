@@ -7,12 +7,17 @@ write_notes() {
 }
 
 write_cmd() {
-  echo "\`\`\`" >> $litlog_log_file
-  cat $litlog_cmd_buffer >> $litlog_log_file
-  echo "\`\`\`" >> $litlog_log_file
-  echo "Writing out commands to $litlog_log_file"
-  rm $litlog_cmd_buffer
-  touch $litlog_cmd_buffer
+  if [[ -e $litlog_cmd_buffer ]]
+  then
+    echo "\`\`\`" >> $litlog_log_file
+    cat $litlog_cmd_buffer >> $litlog_log_file
+    echo "\`\`\`" >> $litlog_log_file
+    echo "Writing out commands to $litlog_log_file"
+    rm $litlog_cmd_buffer
+    touch $litlog_cmd_buffer
+  else
+    echo "MESSAGE: Commands buffer is empty. Use --add to add commands"
+  fi
 }
 
 #write_metadata() {
