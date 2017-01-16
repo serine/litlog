@@ -12,25 +12,35 @@ litlog_meta_buffer="$litlog_usr_env_dir/metadata_buffer.log"
 
 litlog_log_file="$litlog_env_path/README.lit"
 
+sys_histfile=$HISTFILE
+export HISTFILE=$litlog_hist_file
+
 #TODO should check for existens of all log/buffer files
 # in case accidental deletion/curruption
 if [[ -d $litlog_usr_env_dir ]]
 then
-  echo "Detected an existing litlog env, adding on to an existing env"
+  echo "MESSAGE: Detected an existing litlog env, adding on to an existing env"
+  if [[ -e $litlog_hist_file && -s $litlog_hist_file ]]
+  then
+    history -r $litlog_hist_file
+    echo "MESSAGE: Reading previous history file into memory"
+  else
+    echo "ERROR: This shouldn't have happened !"
+  fi
 else
+  # append existing history buffer to an old HISTFILE
+  history -a $sys_histfile
+  # clear history cache for fresh litlog env
+  history -c
+  # make litlog directory for all its files
   mkdir $litlog_usr_env_dir
-
+  # initiate empty files
   touch $litlog_notes_buffer \
         $litlog_hist_file \
         $litlog_meta_buffer 
-fi
 
-sys_histfile=$HISTFILE
-export HISTFILE=$litlog_hist_file
-# append existing history buffer to an old HISTFILE
-history -a $sys_histfile
-# clear history cache
-history -c
+  echo "MESSAGE: activating new litlog env"
+fi
 
 user_histignore=$HISTIGNORE
 user_histtimeformat=$HISTTIMEFORMAR
@@ -72,9 +82,7 @@ fi
 # -c clear memory
 # -a append
 user_prompt_cmd=$PROMPT_COMMAND
-export PROMPT_COMMAND="history -a; history -c; history -r;"
+export PROMPT_COMMAND=""
 
 user_prompt=$PS1
-#PS1="(litlogenv@\[\033[1;31m\]$litlog_parent_dir\[\033[00m\]) $PS1"
-#PS1="(\[\033[1;31m\]litlog_env\[\033[00m\]) $PS1"
 PS1="(litlog_env) $PS1"

@@ -1,3 +1,5 @@
+# up on deactivation you want
+# 1. unset all of your litlog special vairable
 
 if [[ -f $litlog_meta_buffer && -f $litlog_log_file ]]
 then
@@ -8,29 +10,30 @@ else
   echo "ERROR: shouldn't have happened deactivate.bash !"
 fi
 
-#if [[ -z $private ]]
-litlog_empty=""
-if [[ -z $litlog_empty ]]
+if [[ -e $litlog_hist_file && -s $litlog_hist_file ]]
 then
-  #echo "This should be not a private sesison!"
-  #echo "$private"
-  cat $litlog_hist_file >> $sys_histfile 
+  # append history buffer to users global HISTFILE
+  history -a $sys_histfile
+  # append history buffer to litlog local HISTFILE
+  history -a $litlog_hist_file 
+  #cat $litlog_hist_file >> $sys_histfile 
 else
-  #echo "This should BE a private sesison!"
-  #echo "$private"
-  # append existing history buffer to env local history file
-  history -a $HISTFILE
-  # and clear the buffer
-  history -c
+  echo "MESSAGE: history file is empty. This shouldn't usually come up.."
 fi
 
 PS1=$user_prompt
+unset user_prompt
 PROMOT_COMMAND=$user_prompt_cmd
-HISTFILE=$sys_histfile
+unset user_prompt_cmd
 
+HISTFILE=$sys_histfile
+unset sys_histfile
 HISTIGNORE=$user_histignore
+unset user_histignore 
 HISTTIMEFORMAT=$user_histtimeformat
+unset user_histtimeformat
 HISTCONTROL=$user_histcontrol
+unset user_histcontrol
 
 shopt -u histappend ## append, no clearouts
 shopt -u histverify ## edit a recalled history line before executing
