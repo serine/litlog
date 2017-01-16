@@ -58,7 +58,7 @@ add_given_hist() {
 }
 
 add_nodups_hist() {
-  if [[ ! -e $litlog_cmd_buffer ]]
+  if [[ ! -e $litlog_cmd_seen ]]
   then
     touch $litlog_cmd_seen
   fi
