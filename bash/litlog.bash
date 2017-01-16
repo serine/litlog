@@ -45,6 +45,10 @@ litlog() {
         echo "                       C (commands) - write commands to the log file"
         echo "                       N (notes) - write notes to the log file"
         echo ""
+        echo "           -c (--clear) [OPTIONS]"
+        echo "                       C (commands) - clear commands buffer"
+        echo "                       N (notes) - clear notes buffer"
+        echo ""
         shift
         ;;
       (act|activate)
@@ -186,6 +190,36 @@ litlog() {
             ;;
           (*)
             echo "ERROR: wrong option, use --add help to get all of the options"
+            break
+            ;;
+        esac
+        shift
+        ;;
+      (-c|--clear)
+        case "$2" in
+          ("")
+            clear_notes_buffer
+            clear_cmd_buffer
+            shift
+            ;;
+          (C|commands)
+            clear_cmd_buffer
+            shift
+            ;;
+          (N|notes)
+            clear_notes_buffer
+            shift
+            ;;
+          (H|help)
+            echo ""
+            echo "    -c (--clear) [OPTIONS]"
+            echo "            C (commands) - clear commands buffer"
+            echo "            N (notes) - clear notes buffer"
+            echo ""
+            shift
+            ;;
+          (*)
+            echo "ERROR: wrong option, use --clear help to get all of the options"
             break
             ;;
         esac
