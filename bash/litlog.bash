@@ -37,6 +37,7 @@ litlog() {
         echo "                               -n - get n numder of lines from the bottom of the history file"
         echo "                               n - get nth history entry from the history file"
         echo "                               n-m - get n-m range from the history file"
+        echo "                               n,m,.. - get these histories from the history file"
         echo ""
         echo "                       N (notes) - add notes to the buffer"
         echo "                       T (title) - add title to the buffer"
