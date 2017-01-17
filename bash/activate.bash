@@ -20,9 +20,11 @@ export HISTFILE=$litlog_hist_file
 if [[ -d $litlog_usr_env_dir ]]
 then
   echo "MESSAGE: Detected an existing litlog env, adding on to an existing env"
-  if [[ -e $litlog_hist_file && -s $litlog_hist_file ]]
+  if [[ -e $litlog_hist_file ]]
   then
-    history -r $litlog_hist_file
+    # read history file into buffer
+    # reading defaults to HISTFILE
+    history -r
     echo "MESSAGE: Reading previous history file into memory"
   else
     echo "ERROR: This shouldn't have happened !"
