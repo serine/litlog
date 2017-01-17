@@ -79,10 +79,14 @@ unset write_all
 unset write_notes
 unset write_cmd
 
-# remove all show functions from the whell environment
+# remove all show functions from the shell environment
 unset show_cmd
 unset show_notes
 unset show_location
 
 #
 unset litlog_meta_buffer
+
+# remove clear commands from shell's env
+unset clear_cmd_buffer
+unset clear_notes_buffer

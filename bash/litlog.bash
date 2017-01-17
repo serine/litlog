@@ -197,6 +197,7 @@ litlog() {
         shift
         ;;
       (-c|--clear)
+        source "$litlog_src_dir/litlog_clear.bash"
         case "$2" in
           ("")
             clear_notes_buffer
