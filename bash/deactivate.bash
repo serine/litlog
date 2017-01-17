@@ -85,6 +85,8 @@ unset write_cmd
 unset show_cmd
 unset show_notes
 unset show_location
+unset show_metadata
+unset show_logfile
 
 #
 unset litlog_meta_buffer

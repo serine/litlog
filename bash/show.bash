@@ -45,3 +45,22 @@ show_metadata() {
     echo "ERROR: You are not in litlog env -> $litlog_env_path. use litlog activate to start one"
   fi
 }
+
+show_logfile() {
+  if [[ -n $litlog_log_file ]]
+  then
+    if [[ -e $litlog_log_file ]] 
+    then
+      if [[ -s $litlog_log_file ]]
+      then
+        cat $litlog_log_file
+      else
+        echo "MESSAGE: Log file $litlog_log_file is empty, use --write help for writing options"
+      fi
+    else
+      echo "MESSAGE: Log file $litlog_log_file doesn't exist yet, to make one use --write help for writing options"
+    fi
+  else
+    echo "ERROR: This shouldn't happend. log file string should be set $litlog_log_file !"
+  fi
+}

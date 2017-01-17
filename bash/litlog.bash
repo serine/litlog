@@ -105,6 +105,10 @@ litlog() {
             show_notes
             shift
             ;;
+          (F|logfile)
+            show_logfile
+            shift
+            ;;
           (L|location)
             show_location
             shift
