@@ -20,7 +20,7 @@ then
   # clear litlog buffer
   history -c 
   # off set users global history
-  history -r $sys_hisfile
+  history -r $sys_histfile
   #cat $litlog_hist_file >> $sys_histfile 
 else
   echo "MESSAGE: history file is empty. This shouldn't usually come up.."
