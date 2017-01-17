@@ -5,7 +5,7 @@
 if [[ -f $litlog_meta_buffer && -n $litlog_log_file ]]
 then
   echo "%> Deactivated on $DATE at $TIME" >> $litlog_meta_buffer 
-  echo "--------------------------------------------------------------------------------" >> $litlog_meta_buffer 
+  echo "%>--------------------------------------------------------------------------------" >> $litlog_meta_buffer 
   echo "MESSAGE: deactivating litlog env $litlog_usr_env_dir"
   cat "$litlog_meta_buffer" >> $litlog_log_file
 else
