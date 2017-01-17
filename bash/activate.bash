@@ -22,9 +22,13 @@ then
   echo "MESSAGE: Detected an existing litlog env, adding on to an existing env"
   if [[ -e $litlog_hist_file ]]
   then
+    # append existing history buffer to an old HISTFILE
+    history -a $sys_histfile
+    # clear history cache for fresh litlog env
+    history -c
     # read history file into buffer
     # reading defaults to HISTFILE
-    history -r
+    history -r $litlog_hist_file 
     echo "MESSAGE: Reading previous history file into memory"
   else
     echo "ERROR: This shouldn't have happened !"
