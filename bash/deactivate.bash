@@ -14,7 +14,7 @@ fi
 if [[ -e $litlog_hist_file ]]
 then
   # append history buffer to users global HISTFILE
-  history -a $sys_histfile
+  #history -a $sys_histfile
   # append history buffer to litlog local HISTFILE
   history -a $litlog_hist_file 
   # clear litlog buffer
