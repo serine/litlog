@@ -52,7 +52,7 @@ user_histignore=$HISTIGNORE
 user_histtimeformat=$HISTTIMEFORMAR
 user_histcontrol=$HISTCONTROL
 
-export HISTIGNORE="history\s+:echo\s%>*: $HISTIGNORE"
+export HISTIGNORE="history\s+:echo\s%>*:litlog *"
 export HISTTIMEFORMAT="%F %T: "
 #export HISTCONTROL=ignoredups:erasedups
 export HISTCONTROL=ignoredups:ignorespace
