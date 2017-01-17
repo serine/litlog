@@ -29,6 +29,7 @@ litlog() {
         echo "           -s (--show) [OPTIONS]"
         echo "                       C (commands) - show buffering commands"
         echo "                       N (notes) - show buffering notes"
+        echo "                       F (logfile) - show content of the log file"
         echo "                       L (location) - show location of the log file"
         echo ""
         echo "           -a (--add) [OPTIONS]"
@@ -118,6 +119,7 @@ litlog() {
             echo "    -s (--show) [OPTIONS]"
             echo "            C (commands) - show buffering commands so far"
             echo "            N (notes) - show buffering notes so far"
+            echo "            F (logfile) - show content of the log file"
             echo "            L (location) - show location of the log file with notes"
             echo ""
             ;;
@@ -183,14 +185,15 @@ litlog() {
           (H|help)
             echo ""
             echo "    -a (--add) [OPTIONS]"
-            echo "            C (commands) - add selected commands to buffer"
-            echo "                    +n - get n numder of lines from the top of the history file"
-            echo "                    -n - get n numder of lines from the bottom of the history file"
-            echo "                    n - get nth history entry from the history file"
-            echo "                    n-m - get n-m range from the history file"
+            echo "            C (commands) [OPTIONS] - add commands to the buffer"
+            echo "                +n - get n numder of lines from the top of the history file"
+            echo "                -n - get n numder of lines from the bottom of the history file"
+            echo "                n - get nth history entry from the history file"
+            echo "                n-m - get n-m range from the history file"
+            echo "                n,m,.. - get these histories from the history file"
             echo ""
+            echo "            N (notes) - add notes to the buffer"
             echo "            T (title) - add title to buffer"
-            echo "            N (notes) - add notes to buffer"
             echo ""
             ;;
           (*)
